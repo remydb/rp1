@@ -10,13 +10,13 @@
 \maketitle
 
 \section{Research question}
-It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single physical optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
+It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single physical optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. Not every wavelength is used for 
 
-For this research project we will look at the possibilities of monitoring fibreglass cables by means of a separate wavelength used exclusively for monitoring. 
+For this research project we will look at the possibilities of the unused wavelengths outside of the Telecom spectrum. 
 The main research question will be as follows:
 \begin{quote}
 \textit{
-Is it possible to use an unused channel to monitor fibre optic based link degradation over time?
+What can we do with the unused wavelength outside of the Telecom spectrum?
 }
 \end{quote}
 
@@ -25,13 +25,22 @@ The main goal of any network design should be to reduce the number of bit errors
 An increase in the BER is never a cause in itself but is always the product of one or more underlying causes such as attenuation, scattering, or dispersion. To help us understand what these causes are and what values can be considered normal we shall try to answer the following sub-question:
 \begin{quote}
 \textit{
-What statistics can we monitor over time which could indicate a future increase in BER?
+What charictaristics can we monitor over time which could indicate a future increase in BER?
 }
 \end{quote}
 When we know what the causes of BER are and how these can be monitored then we can try to implement this for ourselves using the 1625nm channel in a proof of concept set up. 
 While implementing this proof of concept we should use our findings of the previous sub-question to send the user some kind of automated warning when the values of one or more of the measured statistics drifts outside of the normal range.
 
 \section{Planning}
+This project starts on Wednesday 02 January 2013 and will end on Friday 01 February 2013. 
+At the end of this project we will have created the following deliverables:
+\begin{itemize}
+\item A research report describing answering the previously mentioned research questions.
+\item A proof of concept where we show that we can send automated messages whenever one or more of the measured statistics drifts outside of the normal range.
+\item A presentation where we present our findings to be held on Wednesday 06 February 2013.
+\end{itemize}
+
+The planning is as follows:\\
   \begin{gantt}[xunitlength=50pt]{9}{5}
     \begin{ganttitle}
       \titleelement{Jan}{4}
@@ -49,13 +58,7 @@ While implementing this proof of concept we should use our findings of the previ
     \ganttbar[color=orange]{Buffer week}{3}{1}
     \ganttbar[color=magenta]{Presentation}{4}{1}
   \end{gantt}
-This project starts on Wednesday 02 January 2013 and will end on Friday 01 February 2013. 
-At the end of this project we will have created the following deliverables:
-\begin{itemize}
-\item A research report describing answering the previously mentioned research questions.
-\item A proof of concept where we show that we can send automated messages whenever one or more of the measured statistics drifts outside of the normal range.
-\item A presentation where we present our findings to be held on Wednesday 06 February 2013.
-\end{itemize}
+  
 
 
 \bibliographystyle{plain}
