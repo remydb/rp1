@@ -4,22 +4,27 @@
 \usepackage{gantt}
 \begin{document}
 
-\title{Monitoring fibre optical based links\\Project plan}
+\title{Using wavelengths outside of the Telecom spectrum\\Project plan}
 \author{Stefan Plug\\Remy de Boer}
 \date{\today}
 \maketitle
 
 \section{Research question}
-It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single physical optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. Not every wavelength is used for 
+It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single physical optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
+Not every wavelength is suitable for heavy traffic usage because of the physical characteristics of these channels. Our hypothesis is that these channels could be used for lower speed applications such as out of band management and monitoring.
 
-For this research project we will look at the possibilities of the unused wavelengths outside of the Telecom spectrum. 
+To test our hypothesis we will look at the possibilities of the unused wavelengths outside of the Telecom spectrum.
 The main research question will be as follows:
 \begin{quote}
 \textit{
-What can we do with the unused wavelength outside of the Telecom spectrum?
+What can unused wavelengths outside of the Telecom spectrum be used for?
 }
 \end{quote}
 
+In this project we will focus on link monitoring and out of band management, but other usages may arise during our research. If this should happen we shall try to document them. 
+
+
+\begin{comment}
 The main symptom that a fibre optic link is degrading is an increase of the Bit Error Rate, BER.
 The main goal of any network design should be to reduce the number of bit errors as much as possible.
 An increase in the BER is never a cause in itself but is always the product of one or more underlying causes such as attenuation, scattering, or dispersion. To help us understand what these causes are and what values can be considered normal we shall try to answer the following sub-question:
@@ -30,6 +35,8 @@ What charictaristics can we monitor over time which could indicate a future incr
 \end{quote}
 When we know what the causes of BER are and how these can be monitored then we can try to implement this for ourselves using the 1625nm channel in a proof of concept set up. 
 While implementing this proof of concept we should use our findings of the previous sub-question to send the user some kind of automated warning when the values of one or more of the measured statistics drifts outside of the normal range.
+
+\end{comment}
 
 \section{Planning}
 This project starts on Wednesday 02 January 2013 and will end on Friday 01 February 2013. 
