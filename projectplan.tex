@@ -11,14 +11,33 @@ For this research project we will look at the possibilities of monitoring fibreg
 The research question will be as follows:
 \begin{quote}
 \textit{
-Is it possible to monitor vital statistics of optical fibreglass cables using the 1625nm channel
+Is it possible to use the 1625nm channel to monitor a fibre optic based link degradation over time?
 }
 \end{quote}
 
-The words 'vital statistics' in the main research question has been kept deliberately vague because there are a multitude of statistics which could be monitored.\\
-When monitoring fibreglass cables, a multitude of values are measured.
+The main symptom that a fibre optic link is degrading is an increase of the Bit Error Rate, BER.
+The main goal of any network design should be to eliminate all bit errors completely.
+An increase in the BER is never a cause in itself but is always the product of one or more underlying causes. To understand what these exact causes are we shall try to answer the following sub-question:
+\begin{quote}
+\textit{
+What statistics can we monitor over time which could indicate a future increase in BER?
+}
+\end{quote}
+
+
+
+When monitoring fibreglass cables, a multitude of values can be measured.
 These values include the signal strength, bit error rate, attenuation, dispersion and a myriad of other values.
-During our research we will decide which of these values we can effectively monitor using the relatively basic 1625nm optical modules.\\
+
+The most important statistics For our research we will focus mainly on the following statistics:
+\begin{itemize}
+\item if the link can be considered to be up
+\item the Bit Error Rate, BER
+\end{itemize}
+
+During our research we will decide which of these values we can effectively monitor using the relatively basic 1625nm optical modules.
+
+
 
 The ITU-T has created a set of standards which show what the wavelength coverage each type of single-mode cable type is designed for \cite[p.~21]{refguide:2011} 
 Although we will not test every cable type for their specific 1625nm attenuation properties, we should keep in mind that attenuation of the 1625nm channel monitoring signal might be higher than that of the main data channels.
