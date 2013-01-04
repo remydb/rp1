@@ -36,7 +36,7 @@ This project starts on Wednesday 02 January 2013 and will end on Friday 01 Febru
 At the end of this project we will have created the following deliverables:
 \begin{itemize}
 \item A research report describing answering the previously mentioned research questions.
-\item A proof of concept where we show that we can send automated messages whenever one or more of the measured statistics drifts outside of the normal range.
+\item A proof of concept where we show that we can monitor characteristics of the fibre channel and use the out-of-band channel to create a management link for remote equipment.
 \item A presentation where we present our findings to be held on Wednesday 06 February 2013.
 \end{itemize}
 
@@ -50,15 +50,46 @@ The planning is as follows:\\
       \numtitle{1}{1}{4}{1}
       \numtitle{1}{1}{1}{1}
     \end{ganttitle}
-    \ganttbar[color=cyan]{Res: Statistics}{0}{2}
+    \ganttbar[color=cyan]{Res: Optical characteristics}{0}{2}
     \ganttbar[color=green]{Setup: Switch}{0}{1}
-	\ganttbar[color=green]{Setup: Nagios}{1}{1}
-    \ganttbar[color=blue]{Doc: Presentation}{2}{1}
+	\ganttbar[color=green]{Setup: Monitoring}{1}{1}
     \ganttbar[color=blue]{Doc: Research report}{2}{1}
+    \ganttbar[color=blue]{Doc: Presentation}{2}{1}
     \ganttbar[color=orange]{Buffer week}{3}{1}
     \ganttbar[color=magenta]{Presentation}{4}{1}
   \end{gantt}
-  
+\newpage
+Explanation per planning item:
+\begin{itemize}
+  \item Res: Optical characteristics
+    \begin{itemize}
+      \item Research the characteristics of fibre optics while operating outside the regular telecoms spectrum (eg. 1625 nm wavelength)
+    \end{itemize}
+  \item Setup: Switch
+    \begin{itemize}
+      \item Get acquainted with the network equipment that will be integrated into the WDM and configure it for our own purposes
+    \end{itemize}
+  \item Setup: Monitoring
+    \begin{itemize}
+      \item Setup a monitoring system to capture link characteristics of the fibre connection
+    \end{itemize}
+  \item Doc: Research report
+    \begin{itemize}
+      \item Write the remainder of the research report and finalize it
+    \end{itemize}
+  \item Doc: Presentation
+    \begin{itemize}
+      \item Prepare a presentation of our research project
+    \end{itemize}
+  \item Buffer week
+    \begin{itemize}
+      \item A buffer week to allow for any delays caused by possible setbacks
+    \end{itemize}
+  \item Presentation
+    \begin{itemize}
+      \item Hold the actual presentation on Wednesday 02 January 2013
+    \end{itemize}
+\end{itemize}
 
 
 \bibliographystyle{plain}
