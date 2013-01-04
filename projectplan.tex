@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage{comment}
+\usepackage{tikz}
+\usepackage{gantt}
 \begin{document}
 
 \title{Monitoring fibre optical based links\\Project plan}
@@ -30,6 +32,23 @@ When we know what the causes of BER are and how these can be monitored then we c
 While implementing this proof of concept we should use our findings of the previous sub-question to send the user some kind of automated warning when the values of one or more of the measured statistics drifts outside of the normal range.
 
 \section{Planning}
+  \begin{gantt}[xunitlength=50pt]{9}{5}
+    \begin{ganttitle}
+      \titleelement{Jan}{4}
+      \titleelement{Feb}{1}
+    \end{ganttitle}
+    \begin{ganttitle}
+      \numtitle{1}{1}{4}{1}
+      \numtitle{1}{1}{1}{1}
+    \end{ganttitle}
+    \ganttbar[color=cyan]{Res: Statistics}{0}{2}
+    \ganttbar[color=green]{Setup: Switch}{0}{1}
+	\ganttbar[color=green]{Setup: Nagios}{1}{1}
+    \ganttbar[color=blue]{Doc: Presentation}{2}{1}
+    \ganttbar[color=blue]{Doc: Research report}{2}{1}
+    \ganttbar[color=orange]{Buffer week}{3}{1}
+    \ganttbar[color=magenta]{Presentation}{4}{1}
+  \end{gantt}
 This project starts on Wednesday 02 January 2013 and will end on Friday 01 February 2013. 
 At the end of this project we will have created the following deliverables:
 \begin{itemize}
