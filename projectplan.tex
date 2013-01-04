@@ -1,50 +1,33 @@
 \documentclass{article}
+\usepackage{comment}
 \begin{document}
 
-\title{Monitoring fiber optical cables over 1625nm\\Project plan}
+\title{Monitoring fibre optical based links\\Project plan}
 \author{Stefan Plug\\Remy de Boer}
 \date{\today}
 \maketitle
 
 \section{Research question}
-For this research project we will look at the possibilities of monitoring fibreglass cables by means of a separate wavelength used exclusively for monitoring.
-The research question will be as follows:
+It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single physical optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
+
+For this research project we will look at the possibilities of monitoring fibreglass cables by means of a separate wavelength used exclusively for monitoring. 
+The main research question will be as follows:
 \begin{quote}
 \textit{
-Is it possible to use the 1625nm channel to monitor a fibre optic based link degradation over time?
+Is it possible to use an unused channel to monitor fibre optic based link degradation over time?
 }
 \end{quote}
 
 The main symptom that a fibre optic link is degrading is an increase of the Bit Error Rate, BER.
-The main goal of any network design should be to eliminate all bit errors completely.
-An increase in the BER is never a cause in itself but is always the product of one or more underlying causes. To understand what these exact causes are we shall try to answer the following sub-question:
+The main goal of any network design should be to reduce the number of bit errors as much as possible.
+An increase in the BER is never a cause in itself but is always the product of one or more underlying causes such as attenuation, scattering, or dispersion. To help us understand what these causes are and what values can be considered normal we shall try to answer the following sub-question:
 \begin{quote}
 \textit{
 What statistics can we monitor over time which could indicate a future increase in BER?
 }
 \end{quote}
-
-
-
-When monitoring fibreglass cables, a multitude of values can be measured.
-These values include the signal strength, bit error rate, attenuation, dispersion and a myriad of other values.
-
-The most important statistics For our research we will focus mainly on the following statistics:
-\begin{itemize}
-\item if the link can be considered to be up
-\item the Bit Error Rate, BER
-\end{itemize}
-
-During our research we will decide which of these values we can effectively monitor using the relatively basic 1625nm optical modules.
-
-
-
-The ITU-T has created a set of standards which show what the wavelength coverage each type of single-mode cable type is designed for \cite[p.~21]{refguide:2011} 
-Although we will not test every cable type for their specific 1625nm attenuation properties, we should keep in mind that attenuation of the 1625nm channel monitoring signal might be higher than that of the main data channels.
-
-
-
-
+When we know what the causes of BER are and how these can be monitored then we can try to implement this for ourselves using the 1625nm channel in a proof of concept set up. 
+While implementing this proof of concept we should use our findings of the previous sub-question to send the user some kind of automated warning when the values of one or more of the measured statistics drifts outside of the normal range.
 
 \section{Planning}
 
