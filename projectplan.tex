@@ -10,48 +10,46 @@
 \maketitle
 
 \section{Research question}
-It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single physical optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
-Not every wavelength is suitable for heavy traffic usage because of the physical characteristics of these channels. Our hypothesis is that these channels could be used for lower speed applications such as out of band management and monitoring.
+It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
+Not every wavelength is suitable for heavy traffic usage because of the physical characteristics of these channels. Our hypothesis is that these channels could be used for lower speed applications such as monitoring and out of band management.
 
 To test our hypothesis we will look at the possibilities of the unused wavelengths outside of the Telecom spectrum.
 The main research question will be as follows:
 \begin{quote}
 \textit{
-What can unused wavelengths outside of the Telecom spectrum be used for?
+What applications can the unused wavelengths outside of the Telecom spectrum be used for?
 }
 \end{quote}
 
-In this project we will focus on link monitoring and out of band management, but other usages may arise during our research. If this should happen we shall try to document them. 
+It is important to be able to have an active monitoring system in place which can send out warnings when it detects either degradation of the link over time or a sudden change in the links characteristics, for example when someone places a tap on the link. 
 
-
-\begin{comment}
-The main symptom that a fibre optic link is degrading is an increase of the Bit Error Rate, BER.
-The main goal of any network design should be to reduce the number of bit errors as much as possible.
-An increase in the BER is never a cause in itself but is always the product of one or more underlying causes such as attenuation, scattering, or dispersion. To help us understand what these causes are and what values can be considered normal we shall try to answer the following sub-question:
+To help us understand how we can effectively monitor an optical link we will ask the following sub-question:
 \begin{quote}
 \textit{
-What charictaristics can we monitor over time which could indicate a future increase in BER?
+What optical link characteristics should we monitor?
 }
 \end{quote}
-When we know what the causes of BER are and how these can be monitored then we can try to implement this for ourselves using the 1625nm channel in a proof of concept set up. 
-While implementing this proof of concept we should use our findings of the previous sub-question to send the user some kind of automated warning when the values of one or more of the measured statistics drifts outside of the normal range.
 
-\end{comment}
+It could happen that the main traffic interface on a switch shuts down which could potentially shut down that section of the network.
+It would be good to have a separate out of band network link up on another interface which could be used to still manage that device.
+
+During this project we will focus on link monitoring and out of band management, but other usages may arise during our research.
+If this should happen we shall try to document them.
 
 \section{Planning}
 This project starts on Wednesday 02 January 2013 and will end on Friday 01 February 2013. 
 At the end of this project we will have created the following deliverables:
 \begin{itemize}
-\item A research report describing answering the previously mentioned research questions.
+\item A research report answering the previously mentioned research questions.
 \item A proof of concept where we show that we can monitor characteristics of the fibre channel and use the out-of-band channel to create a management link for remote equipment.
-\item A presentation where we present our findings to be held on Wednesday 06 February 2013.
+\item A presentation where we will present our findings, to be held on Wednesday 06 February 2013.
 \end{itemize}
 
 The planning is as follows:\\
   \begin{gantt}[xunitlength=50pt]{9}{5}
     \begin{ganttitle}
-      \titleelement{Jan}{4}
-      \titleelement{Feb}{1}
+      \titleelement{Jan 2013}{4}
+      \titleelement{Feb 2013}{1}
     \end{ganttitle}
     \begin{ganttitle}
       \numtitle{1}{1}{4}{1}
@@ -70,31 +68,31 @@ Explanation per planning item:
 \begin{itemize}
   \item Res: Optical characteristics
     \begin{itemize}
-      \item Research the characteristics of fibre optics while operating outside the regular telecoms spectrum (eg. 1625 nm wavelength)
+      \item Research the characteristics of fibre optics while operating outside the regular telecoms spectrum, eg. 1625 nm wavelength.
     \end{itemize}
   \item Setup: Switch
     \begin{itemize}
-      \item Get acquainted with the network equipment that will be integrated into the WDM and configure it for our own purposes
+      \item Get acquainted with the network equipment and configure an out of band management set up.
     \end{itemize}
   \item Setup: Monitoring
     \begin{itemize}
-      \item Setup a monitoring system to capture link characteristics of the fibre connection
+      \item Setup a monitoring system to capture link characteristics of the fibre connection.
     \end{itemize}
   \item Doc: Research report
     \begin{itemize}
-      \item Write the remainder of the research report and finalize it
+      \item Write the remainder of the research report and finalize it.
     \end{itemize}
   \item Doc: Presentation
     \begin{itemize}
-      \item Prepare a presentation of our research project
+      \item Prepare a presentation of our research project.
     \end{itemize}
   \item Buffer week
     \begin{itemize}
-      \item A buffer week to allow for any delays caused by possible setbacks
+      \item A buffer week to allow for any delays caused by possible setbacks.
     \end{itemize}
   \item Presentation
     \begin{itemize}
-      \item Hold the actual presentation on Wednesday 02 January 2013
+      \item Hold the actual presentation on Wednesday 02 January 2013.
     \end{itemize}
 \end{itemize}
 
