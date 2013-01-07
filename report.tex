@@ -1,12 +1,14 @@
 \documentclass{article}
+\usepackage{comment}
 
 \begin{document}
 
-\title{Develop/prototype a new optical network monitoring tool. }
-\author{Stefan Plug, Remy de Boer}
+\title{Using wavelengths outside of the Telecom spectrum}
+\author{Stefan Plug\\Remy de Boer}
 \date{\today}
 \maketitle
 
+\begin{comment}
 \begin{tabular}{|c|c|c|}
 \hline 
 Version number & Date & Comment \\ 
@@ -14,14 +16,40 @@ Version number & Date & Comment \\
 0.1 & 03-01-2013 & Start of of document \\ 
 \hline 
 \end{tabular} 
+\end{comment}
 
 \tableofcontents
 
-\section{preface}
+\section{Preface}
 
 \section{Summary}
 
 \section{Research question}
+It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
+Not every wavelength is suitable for heavy traffic usage because of the physical characteristics of these channels. Our hypothesis is that these channels could be used for lower speed applications such as monitoring and out of band management.
+
+To test our hypothesis we will look at the possibilities of the unused wavelengths outside of the Telecom spectrum.
+The main research question will be as follows:
+\begin{quote}
+\textit{
+What applications can the unused wavelengths outside of the Telecom spectrum be used for?
+}
+\end{quote}
+
+It is important to be able to have an active monitoring system in place which can send out warnings when it detects either degradation of the link over time or a sudden change in the links characteristics, for example when someone places a tap on the link. 
+
+To help us understand how we can effectively monitor an optical link we will ask the following sub-question:
+\begin{quote}
+\textit{
+What optical link characteristics should we monitor?
+}
+\end{quote}
+
+It could happen that the main traffic interface on a switch shuts down which could potentially shut down that section of the network.
+It would be good to have a separate out of band network link up on another interface which could be used to still manage that device.
+
+During this project we will focus on link monitoring and out of band management, but other usages may arise during our research.
+If this should happen we shall try to document them.
 
 \section{Fibre Technology}
 In this chapter we will elaborate on some of the used technology and techniques used for this research project.
@@ -58,6 +86,21 @@ G.652.D & From O to L bands \\
 The cables which do not officially support the 1625nm channel are expected to generate a higher attenuation effect. Although we will not try to test this effect for all the different kinds of fibre, we should keep this in mind during testing.
 
 \section{Solution proof of concept}
+Test systems: Inteno Broadcom: XG6746-R1 \cite{Inteno:XG6746}
+\begin{itemize}
+\item Broadcom 6338
+\item Marvell 88E6161
+\item 8 MB Flash
+\item 32 MB RAM
+\end{itemize}
+
+Optics:
+\begin{itemize}
+\item SFP
+\item EOptolink
+\item EOLS-1603-29SD
+\item 1625nm
+\end{itemize}
 
 \section{Conclusion}
 
