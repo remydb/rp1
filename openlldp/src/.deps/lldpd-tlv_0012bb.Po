@@ -1,0 +1,1 @@
+lldpd-tlv_0012bb.o: tlv/oui/tlv_0012bb.c
