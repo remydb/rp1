@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
     uid = getuid();
 
     if (uid != 0) {
-        debug_printf(DEBUG_NORMAL, "You must be running as root to run %s!\n", program);
+        debug_printf(DEBUG_NORMAL, "TEST: You must be running as root to run %s!\n", program);
         exit(0);
     }
 
