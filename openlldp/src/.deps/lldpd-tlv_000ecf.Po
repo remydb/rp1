@@ -1,3 +1,0 @@
-lldpd-tlv_000ecf.o: tlv/oui/tlv_000ecf.c tlv/oui/tlv_000ecf.h
-
-tlv/oui/tlv_000ecf.h:

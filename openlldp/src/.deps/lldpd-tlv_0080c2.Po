@@ -1,3 +1,0 @@
-lldpd-tlv_0080c2.o: tlv/oui/tlv_0080c2.c tlv/oui/tlv_0080c2.h
-
-tlv/oui/tlv_0080c2.h:
