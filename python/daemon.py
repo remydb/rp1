@@ -1,8 +1,46 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 import socket
 import sys
 import subprocess
 import time
+import socket
+import SocketServer
+from SimpleXMLRPCServer import SimpleXMLRPCServer
+from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+
+class RequestHandler(SimpleXMLRPCRequestHandler):
+	rpc_paths = ('/RPC2',)
+
+class Polls:
+	def temp(self):
+		return "TEMP"
+
+	def rx(self):
+		cmdGen = cmdgen.CommandGenerator()
+
+		errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
+			cmdgen.CommunityData('public'),
+			cmdgen.UdpTransportTarget(('192.168.168.1', 161)),
+			'1.3.6.1.4.1.12919.6.9.0'
+		)
+		return "wut"
+		# Check for errors and print out results
+		if errorIndication:
+			return errorIndication
+		else:
+			if errorStatus:
+				return('%s at %s' % (
+					errorStatus.prettyPrint(),
+					errorIndex and varBinds[int(errorIndex)-1] or '?'
+					)
+				)
+			else:
+				for name, val in varBinds:
+					return('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+
+	def tx(self):
+		return "TXVAL"
 
 class Statserv:
 	def __init__(self):
@@ -11,31 +49,14 @@ class Statserv:
 		self.port	=	32323
 		self.listen()
 
-
 	def listen(self):
-		if not socket.has_ipv6:
-			raise Exception("the local machine has no IPv6 support enabled")
+		SocketServer.TCPServer.address_family = socket.AF_INET6
+		server = SimpleXMLRPCServer(("::", 8000), requestHandler=RequestHandler)
+		server.register_introspection_functions()
+		server.register_instance(Polls())
 
-		addrs = socket.getaddrinfo(self.host, self.port, socket.AF_INET6, socket.SOCK_STREAM)
-		# example output: [(23, 0, 6, '', ('::1', 10008, 0, 0))]
-		if len(addrs) == 0:
-			raise Exception("there is no IPv6 address configured for localhost")
-		entry0 = addrs[0]
-		sockaddr = entry0[-1]
-		s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-		s.bind(sockaddr)
-		s.listen(1)
-		print "server opened socket connection:", s, ", address: '%s'" % sockaddr[0]
-		conn, addr = s.accept()
-	
-		time.sleep(1)
-		print 'Server: Connected by', addr
-		while True: # answer a single request
-			data = conn.recv(1024)
-			print data
-		conn.close()
-		s.close()
-		quit()
+		# Run the server's main loop
+		server.serve_forever()
 
 if __name__ == '__main__':
 	run = Statserv()

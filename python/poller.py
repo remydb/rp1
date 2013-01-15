@@ -1,42 +1,32 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 import socket
 import sys
 import time
+import xmlrpclib
 
 class Poll:
 	def __init__(self):
-		try:
-			polltype	=	sys.argv[0]
-		except:
-			'''do nothing'''
+		self.s = xmlrpclib.ServerProxy('http://[fe80::201:2eff:fe47:26d2%eth0.11]:8000')
+		#print self.s.system.listMethods()
 
-	def connect(self):
-		HOST = 'fe80::201:2eff:fe47:26d2%eth0.11'	# The remote host
-		PORT = 32323			# The same port as used by the server
-		s = None
-		for res in socket.getaddrinfo(HOST, PORT, socket.AF_UNSPEC, socket.SOCK_STREAM):
-			af, socktype, proto, canonname, sa = res
-			try:
-				s = socket.socket(af, socktype, proto)
-			except socket.error as msg:
-				s = None
-				continue
-			try:
-				s.connect(sa)
-			except socket.error as msg:
-				s.close()
-				s = None
-				continue
-			break
-		if s is None:
-			print 'could not open socket'
-			sys.exit(1)
-		s.sendall('Hello, world')
-		data = s.recv(1024)
-		s.close()
-		print 'Received', repr(data)
+	# def poll_temp(self):
+	# 	res = self.s.temp()	
+	# 	print res	
+
+	def poll_rx(self):
+		res = self.s.rx()
+		print res
+
+	# def poll_tx(self):
+	# 	res = self.s.tx()
+	# 	print res
 
 if __name__ == '__main__':
 	run = Poll()
-	run.connect()
+	func = getattr(run, sys.argv[1])
+	print func
+	if(callable(func)):
+		func()
+	else:
+		print "Argument is not a valid poll command!"
