@@ -7,7 +7,7 @@ import xmlrpclib
 
 class Poll:
 	def __init__(self):
-		self.s = xmlrpclib.ServerProxy('http://[fe80::201:2eff:fe47:26d2%eth0.11]:8000')
+		self.s = xmlrpclib.ServerProxy('http://[fe80::ba27:ebff:fe58:69e2%eth0.11]:8000')
 		#print self.s.system.listMethods()
 
 	# def poll_temp(self):
@@ -25,7 +25,6 @@ class Poll:
 if __name__ == '__main__':
 	run = Poll()
 	func = getattr(run, sys.argv[1])
-	print func
 	if(callable(func)):
 		func()
 	else:

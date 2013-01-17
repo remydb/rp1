@@ -24,20 +24,7 @@ class Polls:
 			cmdgen.UdpTransportTarget(('192.168.168.1', 161)),
 			'1.3.6.1.4.1.12919.6.9.0'
 		)
-		return "wut"
-		# Check for errors and print out results
-		if errorIndication:
-			return errorIndication
-		else:
-			if errorStatus:
-				return('%s at %s' % (
-					errorStatus.prettyPrint(),
-					errorIndex and varBinds[int(errorIndex)-1] or '?'
-					)
-				)
-			else:
-				for name, val in varBinds:
-					return('%s = %s' % (name.prettyPrint(), val.prettyPrint()))
+		return str(varBinds[0][1])[:-4]
 
 	def tx(self):
 		return "TXVAL"
