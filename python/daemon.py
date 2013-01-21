@@ -7,13 +7,13 @@ import threading
 import socket
 import SocketServer
 import xmlrpclib
+import sched
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from xml.dom.minidom import parseString
 from string import split
 from hashlib import sha224
-from time import sleep
 
 class Authcls:
 	auth_pass = "Tallgrass"
@@ -40,6 +40,22 @@ class Authcls:
 		hashed_auth = sha224(auth).hexdigest() # we should also put a Nonce in here maybe?
 		return hashed_auth
 
+	def check_lladdr(self):
+		f = open('./remote_lladdr', 'r')
+		lladdr = f.read()
+		f.close()
+		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+		if s.heartbeat() == 1:
+			return 1
+		else:
+			time.sleep(5)
+			if s.heartbeat() == 1:
+				timer.enter(60, 1, self.check_lladdr, ())
+				return 1
+			else:
+				self.runloop()
+
+
 	def runloop(self):
 		lladdrs = self.get_lladdrs()
 		ownhash = self.create_hashed_auth()
@@ -47,18 +63,20 @@ class Authcls:
 
 		while auth_done == False:
 			for lladdr in lladdrs:
-				print "Trying auth on " + lladdr
-				sleep(1)
 				try:
 					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
 					if s.auth(ownhash) == 1:
 						print "Auth succeeded for " + lladdr
 						auth_done == True
-						return lladdr
+						f = open('./remote_lladdr', 'w')
+						f.write(lladdr)
+						f.close()
+						return 1
 					else:
 						print "Auth failed for " + lladdr
+						time.sleep(1)
 				except:
-					print lladdr + " is not the droid you are looking for"
+					time.sleep(1)
 
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -91,6 +109,9 @@ class Polls:
 		else:
 			return 0
 
+	def heartbeat(self):
+		return 1
+
 	def rx(self):
 		cmdGen = cmdgen.CommandGenerator()
 
@@ -107,7 +128,6 @@ class Statserv(threading.Thread):
 		p	=	subprocess.Popen(["ip addr show eth0 | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'"], stdout=subprocess.PIPE, shell=True)
 		self.host	=	p.communicate()[0].rstrip() + '%eth0.11'
 		self.port	=	32323
-		#self.listen()
 
 	def run(self):
 		SocketServer.TCPServer.address_family = socket.AF_INET6
@@ -127,7 +147,8 @@ if __name__ == '__main__':
 	print t.isAlive()
 
 	x = Authcls()
-	result = x.runloop()
-	print result
+	x.runloop()
 
-
+	timer = sched.scheduler(time.time, time.sleep)
+	timer.enter(60, 1, x.check_lladdr, ())
+	timer.run()
