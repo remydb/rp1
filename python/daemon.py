@@ -121,7 +121,6 @@ class Polls:
 		return 1
 
 	def rx(self, srcip):
-		print "Rx poll received"
 		cmdGen = cmdgen.CommandGenerator()
 
 		errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
@@ -140,7 +139,7 @@ class Statserv(threading.Thread):
 
 	def run(self):
 		SocketServer.TCPServer.address_family = socket.AF_INET6
-		server = SimpleXMLRPCServer(("::", 8000), requestHandler=RequestHandler)
+		server = SimpleXMLRPCServer(("::", 8000), requestHandler=RequestHandler, logRequests=0)
 		server.register_introspection_functions()
 		server.register_instance(Polls())
 
