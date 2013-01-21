@@ -76,7 +76,8 @@ class Authcls:
 						f = open('./remote_lladdr', 'w')
 						f.write(lladdr)
 						f.close()
-						timer.enter(60, 1, x.check_lladdr, ())
+						try:
+							timer.enter(60, 1, x.check_lladdr, ())
 						return 1
 					else:
 						print "Auth failed for " + lladdr
