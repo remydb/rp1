@@ -45,18 +45,20 @@ class Authcls:
 		lladdr = f.read()
 		f.close()
 		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
-		if s.heartbeat() == 1:
-			print "Heartbeat success"
-			timer.enter(60, 1, self.check_lladdr, ())
-			return 1
-		else:
-			print "Heartbeat failed, retrying"
-			time.sleep(5)
+		try:
 			if s.heartbeat() == 1:
-				print "Heartbeat success on second attempt"
+				print "Heartbeat success"
 				timer.enter(60, 1, self.check_lladdr, ())
 				return 1
-			else:
+		except:
+			print "Heartbeat failed, retrying"
+			time.sleep(5)
+			try:
+				if s.heartbeat() == 1:
+					print "Heartbeat success on second attempt"
+					timer.enter(60, 1, self.check_lladdr, ())
+					return 1
+			except:
 				print "Heartbeat failed on second attempt, rerunning neighbour search"
 				self.runloop()
 
@@ -119,6 +121,7 @@ class Polls:
 		return 1
 
 	def rx(self, srcip):
+		print "Rx poll received"
 		cmdGen = cmdgen.CommandGenerator()
 
 		errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
