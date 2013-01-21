@@ -16,8 +16,8 @@ from hashlib import sha224
 from time import sleep
 
 class Authcls:
-	self.auth_pass = "Tallgrass"
-	self.dev = "eth0.11"
+	auth_pass = "Tallgrass"
+	dev = "eth0.11"
 
 	def get_lladdrs(self):
 		subprocess.call(["ping6", "-c4", "-I", self.dev, "ff02::1"], stdout=subprocess.PIPE)
