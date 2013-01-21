@@ -45,10 +45,12 @@ class Authcls:
 		lladdr = f.read()
 		f.close()
 		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+		functimer = threading.Timer(30.0, self.check_lladdr)
+	
 		try:
 			if s.heartbeat() == 1:
 				print "Heartbeat success"
-				timer.enter(60, 1, self.check_lladdr, ())
+				functimer.start()
 				return 1
 		except:
 			print "Heartbeat failed, retrying"
@@ -56,7 +58,7 @@ class Authcls:
 			try:
 				if s.heartbeat() == 1:
 					print "Heartbeat success on second attempt"
-					timer.enter(60, 1, self.check_lladdr, ())
+					functimer.start()
 					return 1
 			except:
 				print "Heartbeat failed on second attempt, rerunning neighbour search"
@@ -67,6 +69,7 @@ class Authcls:
 		lladdrs = self.get_lladdrs()
 		ownhash = self.create_hashed_auth()
 		auth_done = False
+		functimer = threading.Timer(30.0, self.check_lladdr)
 
 		while auth_done == False:
 			for lladdr in lladdrs:
@@ -78,11 +81,8 @@ class Authcls:
 						f = open('./remote_lladdr', 'w')
 						f.write(lladdr)
 						f.close()
-						try:
-							timer.enter(60, 1, x.check_lladdr, ())
-							return 1
-						except:
-							return 1
+						functimer.start()
+						return 1
 					else:
 						print "Auth failed for " + lladdr
 						time.sleep(1)
@@ -157,6 +157,5 @@ if __name__ == '__main__':
 	x = Authcls()
 	x.runloop()
 
-	timer = sched.scheduler(time.time, time.sleep)
-	timer.enter(60, 1, x.check_lladdr, ())
-	timer.run()
+	#timer = threading.Timer(30.0, x.check_lladdr)
+	#timer.start()
