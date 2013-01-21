@@ -33,7 +33,7 @@ class Find:
 		return lladdrs
 
 	def create_hashed_auth(self):
-		proc = subprocess.Popen("ifconfig " + self.dev + " | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'", stdout=PIPE, shell=True)
+		proc = subprocess.Popen("ifconfig " + self.dev + " | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'", stdout=subprocess.PIPE, shell=True)
 		own_lladdr = proc.stdout.read().rstrip()
 		auth = self.auth_pass + " " + own_lladdr
 		hashed_auth = sha224(auth).hexdigest() # we should also put a Nonce in here maybe?
