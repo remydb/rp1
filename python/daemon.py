@@ -41,14 +41,6 @@ class Authcls:
 		hashed_auth = sha224(auth).hexdigest() # we should also put a Nonce in here maybe?
 		return hashed_auth
 
-	def check_hashed_auth(self, hashed_auth, remote_lladdr):
-		check_auth = self.auth_pass + " " + remote_lladdr
-		hashed_check_auth = sha224(check_auth).hexdigest()
-		if hashed_check_auth == hashed_auth:
-			return 1
-		else:
-			return 0
-
 	def runloop(self):
 		lladdrs = self.get_lladdrs()
 		ownhash = self.create_hashed_auth()
@@ -91,7 +83,9 @@ class Polls:
 		print "Received:"
 		print "rcvdhash: " + rcvdhash
 		print "srcip: " + srcip.split('%')[0]
-		if Authcls.check_hashed_auth(rcvdhash, srcip.split('%')[0]) == 1:
+		check_auth = Authcls.auth_pass + " " + srcip
+		hashed_check_auth = sha224(check_auth).hexdigest()
+		if hashed_check_auth == rcvdhash:
 			return 1
 		else:
 			return 0
