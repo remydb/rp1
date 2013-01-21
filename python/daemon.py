@@ -16,9 +16,8 @@ from hashlib import sha224
 from time import sleep
 
 class Authcls:
-	def __init__(self):
-		self.auth_pass = "Tallgrass"
-		self.dev = "eth0.11"
+	self.auth_pass = "Tallgrass"
+	self.dev = "eth0.11"
 
 	def get_lladdrs(self):
 		subprocess.call(["ping6", "-c4", "-I", self.dev, "ff02::1"], stdout=subprocess.PIPE)
@@ -83,7 +82,7 @@ class Polls:
 		print "Received:"
 		print "rcvdhash: " + rcvdhash
 		print "srcip: " + srcip.split('%')[0]
-		check_auth = Authcls.auth_pass + " " + srcip
+		check_auth = Authcls.auth_pass + " " + srcip.split('%')[0]
 		hashed_check_auth = sha224(check_auth).hexdigest()
 		if hashed_check_auth == rcvdhash:
 			return 1
