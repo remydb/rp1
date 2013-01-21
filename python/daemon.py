@@ -15,7 +15,7 @@ from string import split
 from hashlib import sha224
 from time import sleep
 
-class Find:
+class Authcls:
 	def __init__(self):
 		self.auth_pass = "Tallgrass"
 		self.dev = "eth0.11"
@@ -58,14 +58,14 @@ class Find:
 			for lladdr in lladdrs:
 				print "Trying auth on " + lladdr
 				sleep(1)
-				try:
-					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
-					if s.auth(ownhash) == 1:
-						print "Auth succeeded for " + lladdr
-						auth_done == True
-						return lladdr
-				except:
-					print lladdr + " is not the droid you are looking for"
+				# try:
+				s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+				if s.auth(ownhash) == 1:
+					print "Auth succeeded for " + lladdr
+					auth_done == True
+					return lladdr
+				# except:
+				# 	print lladdr + " is not the droid you are looking for"
 
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -91,8 +91,7 @@ class Polls:
 		print "Received:"
 		print "rcvdhash: " + rcvdhash
 		print "srcip: " + srcip.split('%')[0]
-		print "Sent: Woop"
-		if Find.check_hashed_auth(rcvdhash, srcip.split('%')[0]) == 1:
+		if Authcls.check_hashed_auth(rcvdhash, srcip.split('%')[0]) == 1:
 			return 1
 		else:
 			return 0
@@ -125,8 +124,6 @@ class Statserv(threading.Thread):
 		server.serve_forever()
 
 if __name__ == '__main__':
-	#findcls = Find()
-	#findcls.
 
 	t = Statserv()
 
@@ -134,7 +131,8 @@ if __name__ == '__main__':
 	t.start()
 	print t.isAlive()
 
-	x = Find()
-	x.runloop()
+	x = Authcls()
+	result = x.runloop()
+	print result
 
 
