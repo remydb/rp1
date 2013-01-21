@@ -56,7 +56,8 @@ class Find:
 		while auth_done == False:
 			for lladdr in lladdrs:
 				print "Trying auth on " + lladdr
-				s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+				try:
+					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
 				if s.auth(ownhash) == 1:
 					print "Auth succeeded for " + lladdr
 					auth_done == True
