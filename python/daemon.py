@@ -18,7 +18,7 @@ class Find:
 
 	def get_lladdrs(self):
 		subprocess.call(["ping6", "-c4", "-I", self.dev, "ff02::1"], stdout=subprocess.PIPE)
-		proc = subprocess.Popen(["ip", "-6", "neighbor", "show", "dev", dev], stdout=subprocess.PIPE)
+		proc = subprocess.Popen(["ip", "-6", "neighbor", "show", "dev", self.dev], stdout=subprocess.PIPE)
 		output = proc.stdout.read()
 		ndlines = split(output, "\n")
 
