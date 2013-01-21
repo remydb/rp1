@@ -47,6 +47,7 @@ class Authcls:
 		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
 		if s.heartbeat() == 1:
 			print "Heartbeat success"
+			timer.enter(60, 1, self.check_lladdr, ())
 			return 1
 		else:
 			print "Heartbeat failed, retrying"
@@ -75,6 +76,7 @@ class Authcls:
 						f = open('./remote_lladdr', 'w')
 						f.write(lladdr)
 						f.close()
+						timer.enter(60, 1, x.check_lladdr, ())
 						return 1
 					else:
 						print "Auth failed for " + lladdr
@@ -145,7 +147,6 @@ if __name__ == '__main__':
 
 	t.daemon = False
 	t.start()
-	print t.isAlive()
 
 	x = Authcls()
 	x.runloop()
