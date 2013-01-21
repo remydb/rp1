@@ -13,6 +13,7 @@ from pysnmp.entity.rfc3413.oneliner import cmdgen
 from xml.dom.minidom import parseString
 from string import split
 from hashlib import sha224
+from time import sleep
 
 class Find:
 	def __init__(self):
@@ -40,7 +41,7 @@ class Find:
 		hashed_auth = sha224(auth).hexdigest() # we should also put a Nonce in here maybe?
 		return hashed_auth
 
-	def check_hashed_auth(self, hashed_auth, auth_pass, remote_lladdr):
+	def check_hashed_auth(self, hashed_auth, remote_lladdr):
 		check_auth = self.auth_pass + " " + remote_lladdr
 		hashed_check_auth = sha224(check_auth).hexdigest()
 		if hashed_check_auth == hashed_auth:
@@ -56,6 +57,7 @@ class Find:
 		while auth_done == False:
 			for lladdr in lladdrs:
 				print "Trying auth on " + lladdr
+				sleep(1)
 				try:
 					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
 					if s.auth(ownhash) == 1:
@@ -88,9 +90,12 @@ class Polls:
 	def auth(self, srcip, rcvdhash):
 		print "Received:"
 		print "rcvdhash: " + rcvdhash
-		print "srcip: " + srcip
+		print "srcip: " + srcip.split('%')[0]
 		print "Sent: Woop"
-		return "Woop"
+		if Find.check_hashed_auth(rcvdhash, srcip.split('%')[0]) == 1:
+			return 1
+		else:
+			return 0
 
 	def rx(self):
 		cmdGen = cmdgen.CommandGenerator()
