@@ -10,6 +10,8 @@ from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 from pysnmp.entity.rfc3413.oneliner import cmdgen
 from xml.dom.minidom import parseString
+from string import split
+from hashlib import sha224
 
 class Find:
 	def __init__(self):
