@@ -50,8 +50,9 @@ class Find:
 	def runloop(self):
 		lladdrs = self.get_lladdrs()
 		ownhash = self.create_hashed_auth()
+		auth_done = False
 
-		while auth_done != True:
+		while auth_done == False:
 			for lladdr in lladdrs:
 				print "Trying auth on " + lladdr
 				s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
