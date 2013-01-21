@@ -8,7 +8,7 @@ import xmlrpclib
 
 class Poll:
 	def __init__(self):
-		self.s = xmlrpclib.ServerProxy('http://[fe80::201:2eff:fe47:26d2%eth0]:8000')
+		self.s = xmlrpclib.ServerProxy('http://[fe80::201:2eff:fe47:26d2%eth0.11]:8000')
 		#print self.s.system.listMethods()
 
 	# def poll_temp(self):
@@ -18,7 +18,9 @@ class Poll:
 	def poll_auth(self):
 		p	=	subprocess.Popen(["ip addr show eth0 | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'"], stdout=subprocess.PIPE, shell=True)
 		self.host	=	p.communicate()[0].rstrip()
+		print "Sent: " + self.host
 		res = self.s.auth(self.host)
+		print "Received: " + res
 
 	def poll_rx(self):
 		res = self.s.rx()

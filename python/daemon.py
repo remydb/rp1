@@ -9,6 +9,7 @@ import SocketServer
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 from SimpleXMLRPCServer import SimpleXMLRPCRequestHandler
 from pysnmp.entity.rfc3413.oneliner import cmdgen
+from xml.dom.minidom import parseString
 
 class Find:
 	def __init__(self):
@@ -48,34 +49,41 @@ class Find:
 		lladdrs = self.get_lladdrs()
 		ownhash = self.create_hashed_auth()
 
-		for lladdr in lladdrs:
-			s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
-			if s.auth(ownhash) == 1:
-				return lladdr
+		while auth_done != True:
+			for lladdr in lladdrs:
+				print "Trying auth on " + lladdr
+				s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+				if s.auth(ownhash) == 1:
+					print "Auth succeeded for " + lladdr
+					auth_done == True
+					return lladdr
 
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
     def __init__(self, req, addr, server):
-       self.client_ip = addr
-       SimpleXMLRPCRequestHandler.__init__(self, req, addr, server)
-       self.rpc_paths = ('/RPC2',)
-    # def decode_request_content(self, data):
-    #    data = SimpleXMLRPCRequestHandler.decode_request_content(self, data)
-    #    from xml.dom.minidom import parseString
-    #    doc = parseString(data)
-    #    ps = doc.getElementsByTagName('params')[0]
-    #    pdoc = parseString(
-    #         ''' <param><value>
-    #             <string>%s</string>
-    #             </value></param>''' % (self.client_ip,))
-    #    p = pdoc.firstChild.cloneNode(True)
-    #    ps.insertBefore(p, ps.firstChild)
-    #    return doc.toxml()
+    	self.client_ip = addr[0]
+    	SimpleXMLRPCRequestHandler.__init__(self, req, addr, server)
+    	self.rpc_paths = ('/RPC2',)
+
+    def decode_request_content(self, data):
+    	data = SimpleXMLRPCRequestHandler.decode_request_content(self, data)
+    	doc = parseString(data)
+    	ps = doc.getElementsByTagName('params')[0]
+    	pdoc = parseString(
+    		''' <param><value>
+    		<string>%s</string>
+    		</value></param>''' % (self.client_ip,))
+    	p = pdoc.firstChild.cloneNode(True)
+    	ps.insertBefore(p, ps.firstChild)
+    	return doc.toxml()
 
 class Polls:
-	def auth(self, rcvdhash):
-		print rcvdhash
-		print RequestHandler.client_ip
+	def auth(self, srcip, rcvdhash):
+		print "Received:"
+		print "rcvdhash: " + rcvdhash
+		print "srcip: " + srcip
+		print "Sent: Woop"
+		return "Woop"
 
 	def rx(self):
 		cmdGen = cmdgen.CommandGenerator()
@@ -91,7 +99,7 @@ class Statserv(threading.Thread):
 	def __init__(self):
 		super(Statserv, self).__init__()
 		p	=	subprocess.Popen(["ip addr show eth0 | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'"], stdout=subprocess.PIPE, shell=True)
-		self.host	=	p.communicate()[0].rstrip() + '%eth0'
+		self.host	=	p.communicate()[0].rstrip() + '%eth0.11'
 		self.port	=	32323
 		#self.listen()
 
@@ -113,5 +121,8 @@ if __name__ == '__main__':
 	t.daemon = False
 	t.start()
 	print t.isAlive()
+
+	x = Find()
+	x.runloop()
 
 
