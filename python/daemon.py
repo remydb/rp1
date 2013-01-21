@@ -46,13 +46,17 @@ class Authcls:
 		f.close()
 		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
 		if s.heartbeat() == 1:
+			print "Heartbeat success"
 			return 1
 		else:
+			print "Heartbeat failed, retrying"
 			time.sleep(5)
 			if s.heartbeat() == 1:
+				print "Heartbeat success on second attempt"
 				timer.enter(60, 1, self.check_lladdr, ())
 				return 1
 			else:
+				print "Heartbeat failed on second attempt, rerunning neighbour search"
 				self.runloop()
 
 
@@ -99,9 +103,6 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 
 class Polls:
 	def auth(self, srcip, rcvdhash):
-		print "Received:"
-		print "rcvdhash: " + rcvdhash
-		print "srcip: " + srcip.split('%')[0]
 		check_auth = Authcls.auth_pass + " " + srcip.split('%')[0]
 		hashed_check_auth = sha224(check_auth).hexdigest()
 		if hashed_check_auth == rcvdhash:
@@ -109,10 +110,10 @@ class Polls:
 		else:
 			return 0
 
-	def heartbeat(self):
+	def heartbeat(self, srcip):
 		return 1
 
-	def rx(self):
+	def rx(self, srcip):
 		cmdGen = cmdgen.CommandGenerator()
 
 		errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
