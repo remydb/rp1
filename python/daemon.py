@@ -78,7 +78,9 @@ class Authcls:
 						f.close()
 						try:
 							timer.enter(60, 1, x.check_lladdr, ())
-						return 1
+							return 1
+						except:
+							return 1
 					else:
 						print "Auth failed for " + lladdr
 						time.sleep(1)
