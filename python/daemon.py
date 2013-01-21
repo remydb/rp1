@@ -58,10 +58,12 @@ class Find:
 				print "Trying auth on " + lladdr
 				try:
 					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
-				if s.auth(ownhash) == 1:
-					print "Auth succeeded for " + lladdr
-					auth_done == True
-					return lladdr
+					if s.auth(ownhash) == 1:
+						print "Auth succeeded for " + lladdr
+						auth_done == True
+						return lladdr
+				except:
+					print lladdr + " is not the droid you are looking for"
 
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
