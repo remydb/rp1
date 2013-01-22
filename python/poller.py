@@ -33,5 +33,5 @@ if __name__ == '__main__':
 	run = Poll()
 	rx = run.poll_rx()
 	tx = run.snmp_tx()
-	diff = tx - rx
+	diff = float(tx) - float(rx)
 	print diff
