@@ -93,14 +93,22 @@ G.652.D & From O to L bands \\
 The cables which do not officially support the 1625nm channel are expected to generate a higher attenuation effect. Although we will not try to test this effect for all the different kinds of fibre, we should keep this in mind during testing.
 
 \newpage
-\section{Solution proof of concept}
-\begin{figure}
-\centerline{\includegraphics[scale=0.4]{images/rp1-monitoring-links.png}}
-\caption{Network diagram of test setup}
-\end{figure}
+\section{Proof of Concept}
+To test our hypotheses we were provided with two Inteno XG6746\cite{Inteno:XG6746} switches by our sponsors. It is in the interest of our sponsor that we can use this relatively cheap equipment instead of specialised, and usually more expensive OTDR equipment. The Inteno XG6746 switches have one modular SFP fiber optic port in which we can place our testing optics. 
 
-To test our hypotheses we built a proof-of-concept, consisting of the following components:
-Test systems: 
+We would like the fibre optic switches to communicate with each other so they can exchange statistics about their fibre optics and use these statistics to create MRTG\cite{MRTG:MRTG} graphs that could show interesting trends which might be an indicator of fibre degradation over time.
+
+The Inteno XG6746 runs on the software image \texttt{XG6746\_4.02ITT24.01\_20121022}. Because of the closed nature of the software we were not able to directly install programs or scripts which we needed to generate traffic on the fibre link directly.
+In the limited time we were allotted for this project we were not able to get any other OS to work. The current software does allow us to read out essential information such as Rx and Tx Decibels of the optic via SNMP.
+
+To still be able to run diagnostic tests we decided to attach a Raspberry Pi to to the switch via Ethernet which can both generate traffic and do periodic polling via SNMP.
+Ideally all the functions performed by the Raspberry Pi would be integrated into the Inteno XG6746, however to simplify matters we chose to use a Raspberry Pi as it boasts a full-fledged Linux environment, Raspbian\cite{raspbian:raspbian}.
+
+For our tests we will use 1625nm optics. for comparison we will also run the same tests on ....nm optics. To validate our test-network itself we will also run similar tests on specialised OTDR equipment using the same optics.
+
+\subsection{Testing equipment}
+
+PUT ALL HARDWARE WE USED IN THIS CHAPTER INCLUDING ALL OPTICS AND OTDRs
 \begin{itemize}
 \item Inteno XG6746 \cite{Inteno:XG6746}
 \begin{itemize}
@@ -109,13 +117,6 @@ Test systems:
 \item 8 MB Flash
 \item 32 MB RAM
 \end{itemize}
-
-%\item Inteno EG500-R1 \cite{Inteno:EG500}
-%\begin{itemize}
-%\item Broadcom 6818
-%\item 16 MB Flash
-%\item 64 MB RAM
-%\end{itemize}
 
 \item Raspberry Pi - Model B
 
@@ -128,26 +129,46 @@ Test systems:
 \end{itemize}
 \end{itemize}
 
-The basic idea of this proof-of-concept is as follows:\\
+\subsection{Test network}
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.4]{images/PoC_all.png}}
+\caption{Network diagram of the test setup}
+\label{fig:poc_all}
+\end{figure}
 
-The CPE devices in either WDM device communicate with each other to exchange statistics about their fibre optics and use these statistics to create MRTG graphs that could show potential fibre or optic degradation.\\
+Figure~\ref{fig:poc_all} on page~\pageref{fig:poc_all} shows our test setup.
+It is important to note that we use 3 separate VLANs. 
 
-The Inteno XG6746 and Raspberry Pi are combined to form the full Customer Premise Equipment.
-Ideally all the functions performed by the Raspberry Pi would be integrated into the Inteno XG6746, however to simplify matters we chose to use a Raspberry Pi as it boasts a full-fledged Linux environment.\\
-Each WDM device comes with an XG6746 that is internally connected to the single fibre link using 1625nm optics.
-As soon as a link is established the Raspberry Pi devices will try to find each other, using Link Layer Discovery Protocol/Neighbour Discovery Protocol.
-The Raspberry Pi polls the locally connected XG6746 for the optics digital diagnostics information using SNMP.
-This information includes optical Tx and Rx power in dBm, the optic voltage and bias as well as the optics temperature.
-As the Raspberry Pis can only poll their locally connected XG6746s, they will have to poll each other for the SNMP data of the other end of the connection.
-To do this, we use a set of python scripts, one running as a daemon on both Raspberry Pis and the other to poll the opposite side of the connection.  These scripts will be called from MRTG to create the graphs.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.4, trim = 0mm 50mm 0mm 0mm]{images/PoC_10.png}}
+\caption{Network diagram of VLAN-10}
+\label{fig:poc_10}
+\end{figure}
 
-\subsection{Automatic directly-attached-neighbour SNMP pulling}
-KLAD:
-It is important that we only pull data from our direct neighbour on the other end of a fibre link because this is the physical link we want to see. The problem here is that the WDM fiber testers will also be used as switches so we can do out-of-band management. there could be a scenario that the WDM testers therefore are in 1 big management broadcast domain. this would make it hard to determine what the IP address is of our directly attached neighbour, it cold just as easily be someone behind our direct neighbour (becouse our neigbour will also be a switch and not an endpoint).
+The purpose of \texttt{VLAN-10} as show in figure~\ref{fig:poc_10} on page~\pageref{fig:poc_10} is to create a single unit out of 1 Raspberry Pi and 1 monitored switch. This way \texttt{RP1} will only monitor \texttt{Switch1} although \texttt{Switch2} uses the same default IPv4 address as \texttt{Switch1}. In the ideal situation where the \texttt{RP\#} and \texttt{Switch\#} would be combined into 1 device this VLAN would be obsolete.
 
-We can use the LLDP protocol to detirmine who is directely attached to our link. LLDP will also give us the IP address of our neighbor which we can then use to get data from him.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.4, trim = 0mm 70mm 0mm 0mm]{images/PoC_11.png}}
+\caption{Network diagram of VLAN-11}
+\label{fig:poc_11}
+\end{figure}
 
-When the switch boots up it will run LLDP on its Fiber interface and when it finds a LLDP neighbor it will use its IP address to log into SNMP and pull relevant information. this way no user configuration is needed and the link monitoring can start automatically
+Figure~\ref{fig:poc_11} on page~\pageref{fig:poc_11} shows \texttt{VLAN-11} which is used to exchange data between 2 \texttt{RP\#} devices. This VLAN creates a group of 2 \texttt{VLAN-10} units using the fiber optics in port \texttt{F1} on \texttt{Switch\#}. The \texttt{RP\#} devices use an IPv6 Link local address, this is done so there is no need to manually configure an IP address when 2  \texttt{VLAN-10} units are connected to each other. The 2 RPs can discover each other by sending a ping to IPv6 multicast address \texttt{FF02::1} to which all IPv6 linklocal hosts should listen and reply too\cite{ietf:rfc4291}. After the RP knows the IPv6 address of a potential neighbour it will do a simple check to see if that neighbour is indeed our polling partner and not some rouge computer. It will do this by sending a SHA256 hash of a common pre-shared password plus its own linklocal IPv6 address which should protect against a simple re-play attack.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.4, trim = 0mm 0mm 0mm 0mm]{images/PoC_12.png}}
+\caption{Network diagram of VLAN-12}
+\label{fig:poc_12}
+\end{figure}
+Figure~\ref{fig:poc_12} on page~\pageref{fig:poc_12} shows \texttt{VLAN-12} which is used to connect our devices to the rest of the network and thus might be used for out-of-band management.
+
+\newpage
+\section{tests}
+We would like to find out if we can use the 1625nm wavelength to do reliable tests of a fibre. we can do this by 
+
+
+
+
 
 \newpage
 \section{Conclusion}
