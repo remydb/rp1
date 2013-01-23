@@ -17,7 +17,7 @@ class Poll:
 
 	def poll_rx(self):
 		res = self.s.rx()
-		print res
+		return res
 
 	def snmp_tx(self):
 		cmdGen = cmdgen.CommandGenerator()
@@ -35,3 +35,6 @@ if __name__ == '__main__':
 	tx = run.snmp_tx()
 	diff = float(tx) - float(rx)
 	print diff
+	print "0"
+	print "0"
+	print "0"
