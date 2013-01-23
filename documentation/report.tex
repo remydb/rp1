@@ -56,41 +56,70 @@ During this project we will focus on link monitoring and out of band management,
 If this should happen we shall try to document them.
 
 \newpage
-\section{Fibre Technology}
-In this chapter we will elaborate on some of the used technology and techniques used for this research project.
-\subsection{Fibreglass cables}
-When using fibreglass networks, multiple types of fibreglass cables are used.
-The two main categories used in computer networking are multi-mode and single-mode cables.
-Multi-mode cables differ from single-mode cables as they consist of a larger core, which allows for easier connections and cheaper light sources such as LEDs. \cite{Fundamentals:2008}
-For our projects we are focussing on single-mode cables, as these are the cables used with Wavelength Division Multiplexing (WDM).
-
-\subsection{Wavelength division multiplexing}
-Wavelength division multiplexing is a technique used to send multiple independent signals across the same fibre.
-WDM works by combining optical signals of different wavelengths into a single fibre to increase the maximum bandwidth of a fibreglass cabl, thus allowing multiple completely separate connections to run along a single fibre cablee.
-On either end of the single fibre cable, the signals are split into individual fibre cables and connected to their final destinations.
-
-This ITU-T standard shows us that the 1625nm channel which resides at the beginning of the L-band is not officially supported by several of the single-mode optical cable standards as show in table \ref{tab:single-mode_types}.
-
+\section{Telecom spectrum}
+When we look at the wavelengths used for telecommunication we can see that the ITU-T has defined the following bands as shown in table \ref{tab:bands}
 \begin{table}[h]
 \centering
-\label{tab:single-mode_types}
-\caption{ITU-T Single-mode cable standards}
-\begin{tabular}{|c|c|c|}
+\label{tab:bands}
+\begin{tabular}{|c|c|c|c|}
 \hline 
-ITU-T code & Wavelength coverage\\ 
+\textbf{Band} & \textbf{Descriptor} & \textbf{Range [nm]}\\ 
 \hline 
-G.652.A & O and C bands \\ 
-\hline
-G.652.B & O and C+L bands \\
-\hline
-G.652.C & From O to C bands \\
-\hline
-G.652.D & From O to L bands \\
-\hline
+O-band & Original & 1260 to 1360 \\ 
+\hline 
+E-band & Extended & 1360 to 1460 \\ 
+\hline 
+S-band & Short wavelength & 1460 to 1530 \\ 
+\hline 
+C-band & Conventional & 1530 to 1565 \\ 
+\hline 
+L-band & Long wavelength & 1565 to 1625 \\ 
+\hline 
+U-band & Ultra-long wavelength & 1625 to 1675 \\ 
+\hline 
 \end{tabular} 
+\caption{ITU-T Bands\cite[p. 134]{itu-t:manual2009}
+}
 \end{table}
 
-The cables which do not officially support the 1625nm channel are expected to generate a higher attenuation effect. Although we will not try to test this effect for all the different kinds of fibre, we should keep this in mind during testing.
+The ITU-T further describes the U-band as:
+\begin{quote}
+In some cases it is desirable to perform a number of maintenance functions (preventive, after
+installation, before service and post-fault) on fibre cables in the outside plant. These involve
+surveillance, testing, and control activities utilizing optical time domain reflectometer (OTDR)
+testing, fibre identification, loss testing, and power monitoring. A wavelength region, that is
+intended to be never occupied by transmission channels, may be attractive for maintenance,
+even if enhanced loss occurs. The U-band has been defined exclusively for possible
+maintenance purposes.
+\end{quote}
+
+The ITU-T's intended use of the U-band corresponds with our own objectives.
+
+\subsection{Choosing a wavelength}
+The U-Band reaches from 1625nm to 1675nm. When choosing a wavelength we need to make sure that we have the least amount of energy loss, or attenuation, when transmitting light. The amount of attenuation depends both on the fibre type and wavelength which are used. 
+
+The main reason of our research is to look at potential uses of the unused channels at the edge of the L-band in a WDM system. Because of this we can safely assume that the fibre optical cable used is a single mode fibre which support C+L band WDM systems. If this link was not used in a WDM set up then there would be no reason to use the unconventional U-band.
+
+The ITU-T has several standards ranging from G.652 to G.656 which specify single mode optical fibres[SOURCE]. none have official support for the U-band. The U-band channel we choose should for this reason be as close to the L-band as possible.
+
+Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation as a function of the wavelength of an unbent fibre we can see that in the case of the U-band there is a gradual slope up as the wavelength increases.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.5, trim = 0mm 0mm 0mm 0mm]{images/attenuation.png}}
+\caption{Attenuation of light through fibre in the infrared region.\cite[fig 2-6]{tannenbaum:networks}}
+\label{fig:attenuation}
+\end{figure}
+
+Figure~\ref{fig:attenuation-bends} on page~\pageref{fig:attenuation-bends} shows the effect of fibre bends on attenuation. Here we can see again that it is better to choose a wavelength as close to the L-band as possible.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.3, trim = 0mm 0mm 0mm 0mm]{images/attenuation-bends.png}}
+\caption{Effect of fibre bends on attenuation.\cite[p. 27]{itu-t:manual2009}}
+\label{fig:attenuation-bends}
+\end{figure}
+
+Because the U-band begins with 1625nm we think this would be the best wavelength to use.
+
+
+
 
 \newpage
 \section{Proof of Concept}
@@ -164,7 +193,9 @@ Figure~\ref{fig:poc_12} on page~\pageref{fig:poc_12} shows \texttt{VLAN-12} whic
 
 \newpage
 \section{tests}
-We would like to find out if we can use the 1625nm wavelength to do reliable tests of a fibre. we can do this by 
+We would like to find out if we can use the 1625nm wavelength to do reliable tests of a fibre. First we will establish a base test using a well-known wavelength used for optical networking. After the base-test we will compare this to the 1625nm wavelength.
+
+Before we will use our test-network we will test this with the reliable Bit Error Rate testers so we also have a base to compare our own setup with.
 
 
 
