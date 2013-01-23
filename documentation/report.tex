@@ -96,16 +96,20 @@ maintenance purposes.
 The ITU-T's intended use of the U-band corresponds with our own objectives.
 
 \subsection{Choosing a wavelength}
-The U-Band reaches from 1625nm to 1675nm. When choosing a wavelength we need to make sure that we have the least amount of energy loss, or attenuation, when transmitting light. The amount of attenuation depends both on the fibre type and wavelength which are used. 
+The U-Band reaches from 1625nm to 1675nm. When choosing a wavelength we need to make sure that we have the least amount of energy loss or attenuation when transmitting light.
+The amount of attenuation depends both on the fibre type and wavelength which is used. 
 
-The main reason of our research is to look at potential uses of the unused channels at the edge of the L-band in a WDM system. Because of this we can safely assume that the fibre optical cable used is a single mode fibre which support C+L band WDM systems. If this link was not used in a WDM set up then there would be no reason to use the unconventional U-band.
+The main reason of our research is to look at potential uses of the unused channels at the edge of the L-band in a WDM system.
+Because of this we can safely assume that the fibre optical cable used is a single mode fibre which supports C+L band WDM systems.
+If the link was not used in a WDM set up, there would be no reason to use the unconventional U-band.
 
-The ITU-T has several standards ranging from G.652 to G.656 which specify single mode optical fibres[SOURCE]. none have official support for the U-band. The U-band channel we choose should for this reason be as close to the L-band as possible.
+The ITU-T has several standards ranging from G.652 to G.656 which specify single mode optical fibres[SOURCE], of which none have official support for the U-band.
+The U-band channel we choose should for this reason be as close to the L-band as possible, to keep the wavelength closer to the cable specifications.
 
-Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation as a function of the wavelength of an unbent fibre we can see that in the case of the U-band there is a gradual slope up as the wavelength increases.
+Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation as a function of the wavelength of an unbent fibre we can see that in the case of the U-band there is a gradual upward slope as the wavelength increases.
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.5, trim = 0mm 0mm 0mm 0mm]{images/attenuation.png}}
-\caption{Attenuation of light through fibre in the infrared region.\cite[fig 2-6]{tannenbaum:networks}}
+\caption{Attenuation of light through fibre in the infra-red region.\cite[fig 2-6]{tannenbaum:networks}}
 \label{fig:attenuation}
 \end{figure}
 
@@ -195,7 +199,26 @@ Figure~\ref{fig:poc_12} on page~\pageref{fig:poc_12} shows \texttt{VLAN-12} whic
 \section{tests}
 We would like to find out if we can use the 1625nm wavelength to do reliable tests of a fibre. First we will establish a base test using a well-known wavelength used for optical networking. After the base-test we will compare this to the 1625nm wavelength.
 
-Before we will use our test-network we will test this with the reliable Bit Error Rate testers so we also have a base to compare our own setup with.
+Before we will use our test-network we will test this with the reliable Bit Error Rate testers so we also have a base to compare our own set-up with.
+
+The set of tests will consist of the following three parts:
+\begin{itemize}
+\item Measuring the difference between Tx and Rx values at either end of the fibre link.
+	\begin{itemize}
+	\item This test will be performed on the same fibre using three different sets of optics operating of different wavelengths.  We will use two common wavelengths as a base reading to compare to the results of the 1625nm wavelength.
+	\end{itemize}
+\item Sending a steady stream of UDP packets across the fibre at 10Mb/s.
+	\begin{itemize}
+	\item This will show if packets are being lost while travelling across the fibre. Our preliminary tests have shown that excessively bending a fibre will result in severe packet loss.
+	\end{itemize}
+\item Running traditional OTDR tests across the fibre using the 1625nm wavelength
+\end{itemize}
+
+The first two of these tests will be done using our test set-up.
+Especially for the first test it is important to bear in mind that we are getting our Tx and Rx values from the digital diagnostic information provided by the optic.
+This information has an error margin which can be vendor specific, but may be at most 3dBm, as stated in the SFF-8472 Specification for
+Diagnostic Monitoring Interface for Optical Transceivers\cite{SFF:DDM}
+
 
 
 
