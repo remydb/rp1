@@ -159,6 +159,8 @@ As our initial set-up seemed unreliable for power measurements, we built another
 Using VLANs we set up connections between two Raspberry Pi's via a 25 kilometre fibre cable.
 This 25 kilometre cable could then be used to test the attenuation of each signal wavelength over a reasonably long distance.
 
+\subsection{measurable stuff}
+SOMETHING ABOUT THAT WE CAN BNLY REALLY TEST ATTENUATION
 \subsection{Testing equipment}
 
 PUT ALL HARDWARE WE USED IN THIS CHAPTER INCLUDING ALL OPTICS AND OTDRs
@@ -182,38 +184,29 @@ PUT ALL HARDWARE WE USED IN THIS CHAPTER INCLUDING ALL OPTICS AND OTDRs
 \end{itemize}
 \end{itemize}
 
-\subsection{Test network}
+\subsection{Primary test network}
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.4]{images/PoC_all.png}}
-\caption{Network diagram of the test setup}
+\caption{Network diagram of the primary test network}
 \label{fig:poc_all}
 \end{figure}
 
-Figure~\ref{fig:poc_all} on page~\pageref{fig:poc_all} shows our test setup.
+Figure~\ref{fig:poc_all} on page~\pageref{fig:poc_all} shows our primary test setup which uses the Inteno XG6746 switches.
 It is important to note that we use 3 separate VLANs. 
 
-\begin{figure}[h]
-\centerline{\includegraphics[scale=0.4, trim = 0mm 50mm 0mm 0mm]{images/PoC_10.png}}
-\caption{Network diagram of VLAN-10}
-\label{fig:poc_10}
-\end{figure}
+The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi and 1 monitored switch. This way \texttt{RP1} will only monitor \texttt{Switch1} although \texttt{Switch2} uses the same default IPv4 address as \texttt{Switch1}. In the ideal situation where the \texttt{RP\#} and \texttt{Switch\#} would be combined into 1 device this VLAN would be obsolete.
 
-The purpose of \texttt{VLAN-10} as show in figure~\ref{fig:poc_10} on page~\pageref{fig:poc_10} is to create a single unit out of 1 Raspberry Pi and 1 monitored switch. This way \texttt{RP1} will only monitor \texttt{Switch1} although \texttt{Switch2} uses the same default IPv4 address as \texttt{Switch1}. In the ideal situation where the \texttt{RP\#} and \texttt{Switch\#} would be combined into 1 device this VLAN would be obsolete.
+\texttt{VLAN-11} is used to exchange data between 2 \texttt{RP\#} devices. This VLAN creates a group of 2 \texttt{VLAN-10} units using the fiber optics in port \texttt{F1} on \texttt{Switch\#}. The \texttt{RP\#} devices use an IPv6 Link local address, this is done so there is no need to manually configure an IP address when 2 \texttt{VLAN-10} units are connected to each other. The 2 RPs can discover each other by sending a ping to IPv6 multicast address \texttt{FF02::1} to which all IPv6 linklocal hosts should listen and reply too\cite{ietf:rfc4291}. After the RP knows the IPv6 address of a potential neighbour it will do a simple check to see if that neighbour is indeed our polling partner and not some rouge computer. It will do this by sending a SHA256 hash of a common pre-shared password plus its own linklocal IPv6 address which should protect against a simple re-play attack.
 
-\begin{figure}[h]
-\centerline{\includegraphics[scale=0.4, trim = 0mm 70mm 0mm 0mm]{images/PoC_11.png}}
-\caption{Network diagram of VLAN-11}
-\label{fig:poc_11}
-\end{figure}
+\texttt{VLAN-12} is used to connect our devices to the rest of the network and thus might be used for out-of-band management.
 
-Figure~\ref{fig:poc_11} on page~\pageref{fig:poc_11} shows \texttt{VLAN-11} which is used to exchange data between 2 \texttt{RP\#} devices. This VLAN creates a group of 2 \texttt{VLAN-10} units using the fiber optics in port \texttt{F1} on \texttt{Switch\#}. The \texttt{RP\#} devices use an IPv6 Link local address, this is done so there is no need to manually configure an IP address when 2  \texttt{VLAN-10} units are connected to each other. The 2 RPs can discover each other by sending a ping to IPv6 multicast address \texttt{FF02::1} to which all IPv6 linklocal hosts should listen and reply too\cite{ietf:rfc4291}. After the RP knows the IPv6 address of a potential neighbour it will do a simple check to see if that neighbour is indeed our polling partner and not some rouge computer. It will do this by sending a SHA256 hash of a common pre-shared password plus its own linklocal IPv6 address which should protect against a simple re-play attack.
+\subsection{Attenuation test network}
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.4, trim = 0mm 0mm 0mm 0mm]{images/PoC_12.png}}
-\caption{Network diagram of VLAN-12}
-\label{fig:poc_12}
+\centerline{\includegraphics[scale=0.4, trim = 0mm 0mm 0mm 0mm]{images/CWDM.png}}
+\caption{Network diagram of the attenuation test network}
+\label{fig:CWDM}
 \end{figure}
-Figure~\ref{fig:poc_12} on page~\pageref{fig:poc_12} shows \texttt{VLAN-12} which is used to connect our devices to the rest of the network and thus might be used for out-of-band management.
 
 \newpage
 \section{tests}
