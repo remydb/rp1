@@ -93,7 +93,7 @@ even if enhanced loss occurs. The U-band has been defined exclusively for possib
 maintenance purposes.
 \end{quote}
 
-The ITU-T's intended use of the U-band corresponds with our own objectives.
+The ITU-T's intended use of the U-band corresponds with our own objectives, it is therefore obvious to us that we will further concentrate on this band.
 
 \subsection{Choosing a wavelength}
 The U-Band reaches from 1625nm to 1675nm. When choosing a wavelength we need to make sure that we have the least amount of energy loss or attenuation when transmitting light.
@@ -101,12 +101,12 @@ The amount of attenuation depends both on the fibre type and wavelength which is
 
 The main reason of our research is to look at potential uses of the unused channels at the edge of the L-band in a WDM system.
 Because of this we can safely assume that the fibre optical cable used is a single mode fibre which supports C+L band WDM systems.
-If the link was not used in a WDM set up, there would be no reason to use the unconventional U-band.
+If the link was not used in a WDM set up, then there would be no reason to use the unconventional U-band.
 
 The ITU-T has several standards ranging from G.652 to G.656 which specify single mode optical fibres[SOURCE], of which none have official support for the U-band.
-The U-band channel we choose should for this reason be as close to the L-band as possible, to keep the wavelength closer to the cable specifications.
+The U-band channel we choose should for this reason be as close to the L-band as possible to keep the wavelength closer to the cable's specifications.
 
-Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation as a function of the wavelength of an unbent fibre we can see that in the case of the U-band there is a gradual upward slope as the wavelength increases.
+Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation as a function of the wavelength of an unbent fibre. We can see that in the case of the U-band there is a gradual upward slope as the wavelength increases.
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.5, trim = 0mm 0mm 0mm 0mm]{images/attenuation.png}}
 \caption{Attenuation of light through fibre in the infra-red region.\cite[fig 2-6]{tannenbaum:networks}}
@@ -116,11 +116,11 @@ Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation
 Figure~\ref{fig:attenuation-bends} on page~\pageref{fig:attenuation-bends} shows the effect of fibre bends on attenuation. Here we can see again that it is better to choose a wavelength as close to the L-band as possible.
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.3, trim = 0mm 0mm 0mm 0mm]{images/attenuation-bends.png}}
-\caption{Effect of fibre bends on attenuation.\cite[p. 27]{itu-t:manual2009}}
+\caption{Effect of fibre bends on attenuation.\cite[p. 27]{refguide:2011}}
 \label{fig:attenuation-bends}
 \end{figure}
 
-Because the U-band begins with 1625nm we think this would be the best wavelength to use.
+Because the U-band begins with 1625nm we think that this would be the best wavelength to use.
 
 
 
@@ -128,18 +128,18 @@ Because the U-band begins with 1625nm we think this would be the best wavelength
 \newpage
 \section{Proof of Concept}
 To test our hypotheses we were initially provided with two Inteno XG6746\cite{Inteno:XG6746} switches by Beetle Fiberoptics.
-It is in their interest that we use this relatively cheap equipment instead of specialised, and usually more expensive OTDR equipment.
+It is in their interest that we use this relatively cheap equipment instead of specialised, and usually more expensive fibre monitoring equipment.
 The Inteno XG6746 switches have one modular SFP fibre optic port in which we can place our testing optics. 
 
 We would like the fibre optic switches to communicate with each other so they can exchange statistics about their fibre optics and use these statistics to create MRTG\cite{MRTG:MRTG} graphs that could show interesting trends which might be an indicator of fibre degradation over time.
 
 The Inteno XG6746 runs on the software image \texttt{XG6746\_4.02ITT24.01\_20121022}.
 Because of the closed nature of the software we were not able to directly install programs or scripts which we needed to generate traffic on the fibre link directly.
-Before the start of our research project we had been informed that we would receive customizable software for these switches, to write our own testing modules.
+Before the start of our research project we had been informed that customizable software would be made available for these switches so we could write our own testing modules.
 This, however, never happened and as such we had to come up with another solution.
 
 We tried to install several open-source operating systems on the switches, unfortunately none of them would work.
-The originally installed software does allow us to read out essential information such as Rx and Tx power values of the optic via SNMP.
+The originally installed software does allow us to read out essential information such as Rx and Tx dBm values of the optic via SNMP.
 
 To still be able to run diagnostic tests we decided to attach a Raspberry Pi to to the switch via Ethernet which can both generate traffic and do periodic polling via SNMP.
 Ideally all the functions performed by the Raspberry Pi would be integrated into the Inteno XG6746, however to simplify matters we chose to use a Raspberry Pi as it boasts a full-fledged Linux environment, Raspbian\cite{raspbian:raspbian}.
@@ -148,15 +148,15 @@ For our main tests we have used 1625nm optics.
 To compare we will also run the same tests on 1470nm, 1550nm and 1610nm optics.
 To validate our test-network itself we will also run similar tests on more specialised equipment using the same optics.
 In theory these optics should return the same values, regardless of which equipment they are plugged into.
-The optics return their values through the standardised digital diagnostics monitoring interface, this standard defines which values are measured and how the information is stored.\cite{SFF:DDM}
-In practice, we have noticed that equipment manufacturers sometimes change these values before displaying them.
+The optics return their values through the standardised Digital Diagnostics Monitoring, DDM\cite{SFF:DDM}, interface. This standard defines which values are measured and how the information is stored.
+In practice, we have noticed that equipment manufacturers sometimes seem to change these values before displaying them.
 A prime example are the Inteno switches used as the core of our tests.
-The Rx and Tx values returned by these switches deviated from the actual values so much that it was hard to spot any relation between the actual and presented values.
+The Rx and Tx values returned by these switches deviated from the actual values so much that it was impossible for us to spot any clear relation between the presented values and the values as measured by a separate optical power meter.
 After some investigation our tests showed that the values presented by the Inteno switches do bear resemblance to the actual values, however they are modified in such a way as to make them completely useless.
-For example: the value for Rx power actually increased when the signal was purposefully attenuated and vice versa.
+For example: the value for Rx power actually was higher than the measured Tx value, and would even increase when the signal was purposefully attenuated.
 
-As our initial set-up seemed unreliable for power measurements, we built another.  This time we used a 28 port ZyXEL switch, which we connected all our devices and fibres to.
-Using vlans we set up connections between two Raspberry Pi's via a 25 kilometre fibre cable.
+As our initial set-up seemed unreliable for power measurements, we built another.  This time we used a 28 port ZyXEL switch to which we connected all our devices and fibres.
+Using VLANs we set up connections between two Raspberry Pi's via a 25 kilometre fibre cable.
 This 25 kilometre cable could then be used to test the attenuation of each signal wavelength over a reasonably long distance.
 
 \subsection{Testing equipment}
