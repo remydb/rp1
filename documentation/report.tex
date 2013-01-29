@@ -122,9 +122,6 @@ Figure~\ref{fig:attenuation-bends} on page~\pageref{fig:attenuation-bends} shows
 
 Because the U-band begins with 1625nm we think that this would be the best wavelength to use.
 
-
-
-
 \newpage
 \section{Proof of Concept}
 To test our hypotheses we were initially provided with two Inteno XG6746\cite{Inteno:XG6746} switches and four 1625nm SFP optics by Beetle Fiberoptics.
@@ -159,7 +156,11 @@ Sw2 & -4.86 dBm & -0.83 dBm  & -12.4 dBm \\
 \caption{Tx and Rx values of two connected Inteno XG6746 switches}
 \end{table}
 
-The web-based GUI shows us that the values should be in dBm, but this makes no sense as the Tx is always lower then the Rx, this would indicate an increase of power in transit. This effect also increases when we introduce an attenuator on the link. Even if we would assume that this is the result of a simple mix-up of Rx and Tx then these values still make no sense because we get totally different values when measuring the actual output with an optical power meter. Also when we assume that these values are in fact measured in milliwatts then these values still make no sense as the values are negative. When the optics are placed in a different type of switch then we do get expected values which would indicate that this problem does not lie in the optics, but rather in the switch itself. We expect this to be a software bug. we can still use these switches for testing out-of-band management, but for fibre attenuation monitoring we had to use another type of switch, a Zyxel XGS4728F. Altough this switch type is not financially interesting for future use by Beetle Fiberoptics, we can still use it for our proof of concept.
+The web-based GUI shows us that the values should be in dBm, but this makes no sense as the Tx is always lower then the Rx, this would indicate an increase of power in transit. This effect also increases when we introduce an attenuator on the link. Even if we would assume that this is the result of a simple mix-up of Rx and Tx then these values still make no sense because we get totally different values when measuring the actual output with an optical power meter. Also when we assume that these values are in fact measured in milliwatts then these values still make no sense as the values are negative. When the optics are placed in a different type of switch then we do get expected values which would indicate that this problem does not lie in the optics, but rather in the switch itself. We expect this to be a software bug. we can still use these switches for testing out-of-band management, but for fibre attenuation monitoring we had to use another type of switch, a Zyxel XGS4728F. 
+
+Although the Zyxel XGS4728F does show us the correct Tx and Rx values for the 1625nm optics, it does not allow them to actually come up. The reason for this is that the optics are only 100-mbit which the Zyxel XGS4728F does not support. 
+
+Our particular hardware situation requires us to build two different networks. Our primary test network will proof that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
 
 \subsection{Primary test network}
 \begin{figure}[h]
@@ -187,9 +188,9 @@ The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi
 
 Because of the dBm representation problem of the Inteno XG6746 switches we had to do create a alternate network using another switch type which does display the Tx and Rx values correctly. The Zyxel XGS4728F does display the correct values, but there was only one available to us, therefore a new network set-up was needed. The Attenuation test network diagram is shown in figure \ref{fig:CWDM} on page \pageref{fig:CWDM}.
 
-The Zyxel XGS4728F switch does have one major flaw, it does not support 100mbit speed optics to come up, which our 1625nm optics are. luckily it does give the correct Tx and Rx values for these optics.
+The Zyxel XGS4728F switch does have one major flaw, it does not support 100-mbit speed optics to come up, which our 1625nm optics are. Luckily it does still give the correct Tx and Rx values for these optics when they are connected to each other with a fibre.
 
-This network only intended to test our dBm comparison script with usable dBm values and is therefore not intended to be 'plug-and-play' like the Primary test network.
+We can both test our dBm exchange script and poll from the 1625nm optics because we can let the RPs poll not only from the optics in their own VLAN, but also from the 1625nm optics.
 
 \newpage
 \section{Tests}
