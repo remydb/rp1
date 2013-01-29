@@ -6,6 +6,7 @@ import time
 import threading
 import socket
 import SocketServer
+import syslog
 import xmlrpclib
 import sched
 from SimpleXMLRPCServer import SimpleXMLRPCServer
@@ -44,24 +45,24 @@ class Authcls:
 		f = open('./remote_lladdr', 'r')
 		lladdr = f.read()
 		f.close()
-		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+		s = xmlrpclib.ServerProxy('http://[' + lladdr + '%' + self.dev + ']:8000')
 		functimer = threading.Timer(30.0, self.check_lladdr)
 	
 		try:
 			if s.heartbeat() == 1:
-				print "Heartbeat success"
+				syslog.syslog("[PyDaemon] Heartbeat success")
 				functimer.start()
 				return 1
 		except:
-			print "Heartbeat failed, retrying"
+			syslog.syslog("[PyDaemon] Heartbeat failed, retrying")
 			time.sleep(5)
 			try:
 				if s.heartbeat() == 1:
-					print "Heartbeat success on second attempt"
+					syslog.syslog("[PyDaemon] Heartbeat success on second attempt")
 					functimer.start()
 					return 1
 			except:
-				print "Heartbeat failed on second attempt, rerunning neighbour search"
+				syslog.syslog("[PyDaemon] Heartbeat failed on second attempt, rerunning neighbour search")
 				self.runloop()
 
 
@@ -74,9 +75,9 @@ class Authcls:
 		while auth_done == False:
 			for lladdr in lladdrs:
 				try:
-					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%eth0.11]:8000')
+					s = xmlrpclib.ServerProxy('http://[' + lladdr + '%' + self.dev + ']:8000')
 					if s.auth(ownhash) == 1:
-						print "Auth succeeded for " + lladdr
+						syslog.syslog("[PyDaemon] Auth succeeded for " + lladdr)
 						auth_done == True
 						f = open('./remote_lladdr', 'w')
 						f.write(lladdr)
@@ -84,10 +85,10 @@ class Authcls:
 						functimer.start()
 						return 1
 					else:
-						print "Auth failed for " + lladdr
-						time.sleep(1)
+						syslog.syslog("[PyDaemon] Auth failed for " + lladdr)
+						time.sleep(5)
 				except:
-					time.sleep(1)
+					time.sleep(5)
 
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
@@ -125,17 +126,19 @@ class Polls:
 
 		errorIndication, errorStatus, errorIndex, varBinds = cmdGen.getCmd(
 			cmdgen.CommunityData('public'),
-			cmdgen.UdpTransportTarget(('192.168.168.1', 161)),
-			'1.3.6.1.4.1.12919.6.9.0'
+			cmdgen.UdpTransportTarget(('192.168.1.120', 161)), #For inteno replace ip with 192.168.168.1
+			#'1.3.6.1.4.1.12919.6.9.0' <-- for inteno
+			'1.3.6.1.4.1.890.1.5.8.46.117.2.1.7.1.5'
 		)
-		return str(varBinds[0][1])[:-4]
+		#return str(varBinds[0][1])[:-4] <-- for inteno
+		return float(varBinds[0][1])
 
 class Statserv(threading.Thread):
-	def __init__(self):
-		super(Statserv, self).__init__()
-		p	=	subprocess.Popen(["ip addr show eth0 | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'"], stdout=subprocess.PIPE, shell=True)
-		self.host	=	p.communicate()[0].rstrip() + '%eth0.11'
-		self.port	=	32323
+	#def __init__(self):
+		#super(Statserv, self).__init__()
+		#p	=	subprocess.Popen(["ip addr show eth0 | grep -oE 'fe80::[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*:[0-9,a-f]*'"], stdout=subprocess.PIPE, shell=True)
+		#self.host	=	p.communicate()[0].rstrip() + '%' + Authcls.dev
+		#self.port	=	32323
 
 	def run(self):
 		SocketServer.TCPServer.address_family = socket.AF_INET6
@@ -150,7 +153,7 @@ if __name__ == '__main__':
 
 	t = Statserv()
 
-	t.daemon = False
+	t.daemon = True
 	t.start()
 
 	x = Authcls()
