@@ -276,7 +276,7 @@ PUT ALL HARDWARE WE USED IN THIS CHAPTER INCLUDING ALL OPTICS AND OTDRs
 %After running the tests it quickly became apparent that the 1625nm band is very susceptible to attenuation.
 
 \subsubsection{Rx- Tx values}
-We started off by using Bit Error Rate Testers to read the attenuation of the light signals across different wavelengths and cable lengths.
+We started off by using Bit Error Rate Testers (BERT) to read the attenuation of the light signals across different wavelengths and cable lengths.
 The following wavelengths were tested:
 \begin{itemize}
 	\item 1550 nm
@@ -326,7 +326,11 @@ This results in the following tables, showing the average attenuation for each w
 
 As you can see, the 3 dBm error margin for the digital diagnostics monitoring distorts the results of the BERT measurements using the one metre cable quite significantly.
 For these tests the attenuation measured with the OFR seems more reliable, however only the Rx is measured by the OFR.
-The Tx is still provided by the DDM interface and may be off.
+The Tx is still provided by the DDM interface and may have a larger deviation.
+
+Regardless of this deviation, it is clear that the 1625nm wavelength suffers from considerably more attenuation than the other tested wavelengths.
+The 1625nm optics are designed to handle at most 30dB difference between Tx and Rx power, so this test across 25 KM still falls well within the defined range of the optics.
+The downside to the 1625nm wavelength suffering from such increased attenuation is that more power will be needed to cover larger distances, compared to regular C- and L-band wavelengths. 
 
 \section{Ethernet using 1625nm}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
