@@ -256,9 +256,39 @@ PUT ALL HARDWARE WE USED IN THIS CHAPTER INCLUDING ALL OPTICS AND OTDRs
 \end{itemize}
 
 \subsection{Results}
-After running the tests it quickly became apparent that the 1625nm band is very susceptible to attenuation.
-%Hier kom jij, Stefan!
+%After running the tests it quickly became apparent that the 1625nm band is very susceptible to attenuation.
 
+\subsubsection{Rx- Tx values}
+We started off by using Bit Error Rate Testers to read the attenuation of the light signals across different wavelengths and cable lengths.
+The following wavelengths were tested:
+\begin{itemize}
+	\item 1550 nm
+	\item 1610 nm
+	\item 1625 nm
+\end{itemize}
+
+For each of these wavelengths we tested four different optics, to make sure we had somewhat reliable results to accurately portray the attenuation of each wavelength.
+All of the used optics were also designed for use over a range of 40 kilometres.
+Each of these optics was then run across a one metre and a 25 kilometre fibre cable.
+These tests were then also performed using a different Bit Error Rate Tester, 
+This results in the following tables, showing the average attenuation for each wavelength and fibre cable length:
+
+\begin{table}[h]
+\centering
+\label{tab:attenuation-table}
+\begin{tabular}{|c|c|c|}
+\hline 
+\textbf{Wavelength} & \textbf{1 M} & \textbf{25KM}\\ 
+\hline 
+1550nm & -0.05 dB &  dB\\ 
+\hline 
+1610nm & 0.0875 dB &  dB\\ 
+\hline 
+1625nm & 2.275 dB & dB\\
+\hline
+\end{tabular} 
+\caption{Tx and Rx values of two connected Inteno XG6746 switches}
+\end{table}
 
 \section{Ethernet using 1625nm}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
