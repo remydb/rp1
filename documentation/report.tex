@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{url}
 
 \begin{document}
 
@@ -25,13 +26,14 @@ Version number & Date & Comment \\
 \newpage
 
 \section{Preface}
+This research report is the product of a four week research project done at the BeetleFiberOptics which is part of the Tallgrass company in Amsterdam, and as part of the Master programme 'System and Network Engineering' at the University of Amsterdam\cite{uva:os3}. 
+
 \newpage
 \section{Summary}
 \newpage
 \section{Research question}
 It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
 Not every wavelength is suitable for heavy traffic usage because of the physical characteristics of these channels. Our hypothesis is that these channels could be used for lower speed applications such as monitoring and out of band management.
-
 To test our hypothesis we will look at the possibilities of the unused wavelengths outside of the Telecom spectrum.
 The main research question will be as follows:
 \begin{quote}
@@ -124,8 +126,8 @@ Because the U-band begins with 1625nm we think that this would be the best wavel
 
 \newpage
 \section{Proof of Concept}
-To test our hypotheses we were initially provided with two Inteno XG6746\cite{Inteno:XG6746} switches and four 1625nm SFP optics by Beetle Fiberoptics.
-It is in their interest that we use this relatively cheap equipment instead of specialised, and usually more expensive fibre monitoring equipment.
+To test our hypotheses we were initially provided with two Inteno XG6746\cite{Inteno:XG6746} switches and four 1625nm SFP optics by BeetleFiberOptics.
+It is in the interest of BeetleFiberOptics that we use this relatively cheap equipment instead of specialised, and usually more expensive fibre monitoring equipment.
 The Inteno XG6746 switches have one modular SFP fibre optic port in which we can place the optics to be tested. 
 
 We would like the fibre optic switches to communicate with each other so they can exchange statistics about their fibre optics and use these statistics to create MRTG\cite{MRTG:MRTG} graphs that could show interesting trends which might be an indicator of fibre degradation over time.
