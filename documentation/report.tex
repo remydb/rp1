@@ -290,20 +290,41 @@ This results in the following tables, showing the average attenuation for each w
 
 \begin{table}[h]
 \centering
-\label{tab:attenuation-table}
-\begin{tabular}{|c|c|c|}
+\label{tab:attenuation-table-ber}
+\begin{tabular}{|c|r|r|}
 \hline 
 \textbf{Wavelength} & \textbf{1 M} & \textbf{25KM}\\ 
 \hline 
-1550nm & -0.05 dB &  dB\\ 
+1550nm & -0.05 dB & 8.3625 dB\\ 
 \hline 
-1610nm & 0.0875 dB &  dB\\ 
+1610nm & 0.0875 dB & 7.975 dB\\ 
 \hline 
-1625nm & 2.275 dB & dB\\
+1625nm & 2.275 dB & 14.325 dB\\
 \hline
 \end{tabular} 
-\caption{Tx and Rx values of two connected Inteno XG6746 switches}
+\caption{Wavelength attenuation as measured with BERT}
 \end{table}
+
+\begin{table}[h]
+\centering
+\label{tab:attenuation-table-ofr}
+\begin{tabular}{|c|r|r|}
+\hline 
+\textbf{Wavelength} & \textbf{1 M} & \textbf{25KM}\\ 
+\hline 
+1550nm & 0.4425 dB & 9.2325 dB\\ 
+\hline 
+1610nm & 0.62375 dB & 9.2825 dB\\ 
+\hline 
+1625nm & 2.25125 dB & 14.95625 dB\\
+\hline
+\end{tabular}
+\caption{Wavelength attenuation as measured with BERT \& OFR}
+\end{table}
+
+As you can see, the 3 dBm error margin for the digital diagnostics monitoring distorts the results of the BERT measurements using the one metre cable quite significantly.
+For these tests the attenuation measured with the OFR seems more reliable, however only the Rx is measured by the OFR.
+The Tx is still provided by the DDM interface and may be off.
 
 \section{Ethernet using 1625nm}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
