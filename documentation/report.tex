@@ -139,7 +139,20 @@ This, however, never happened and as such we had to come up with another solutio
 We tried to install several open-source operating systems on the switches, unfortunately none of them would work. To still be able to run diagnostic tests we decided to attach a Raspberry Pi to to the switch via Ethernet which can both generate traffic and do periodic polling via SNMP.
 Ideally all the functions performed by the Raspberry Pi would be integrated into the Inteno XG6746, however to simplify matters we chose to use a Raspberry Pi as it boasts a full-fledged Linux environment, Raspbian\cite{raspbian:raspbian}.
 
-The originally installed software does allow us to read out information about the optics’s Rx and Tx, however, we do not know in what format these values are presented. An example of the readout is shown in table \ref{tab:crazy-inteno} on page \pageref{tab:crazy-inteno} in which we show the represented values of two connected Inteno XG6746 switches using 1550nm optics with a 25KM fibre, and were we compare the Rx value with that of a separate Optical Power Meter, a Fujikura FID-25R.
+The Inteno XG6746 allows us to read out the following information about the optic:
+\begin{itemize}
+	\item Vendor Name : EOPTOLINK INC   
+	\item Vendor OUI  : 00 00 00
+	\item Vendor PN   : EOLS-1603-29SD  
+	\item Vendor rev  : 1.0 
+	\item Temperature : 62.559 C
+	\item Voltage     : 3.19 Volts
+	\item Bias        : 8 mA
+	\item Tx Power    : -5.65 dBm \emph{probably wrong}
+	\item Rx Power    : -0.03 dBm \emph{probably wrong}
+\end{itemize}
+
+As seen above we can read out the optics’s Rx and Tx, however, we do not know in what format these values are presented. An example of the readout is shown in table \ref{tab:crazy-inteno} on page \pageref{tab:crazy-inteno} in which we show the represented values of two connected Inteno XG6746 switches using 1550nm optics with a 25KM fibre, and were we compare the Rx value with that of a separate Optical Power Meter, a Fujikura FID-25R.
 
 \begin{table}[h]
 \centering
@@ -156,9 +169,11 @@ Sw2 & -4.86 dBm & -0.83 dBm  & -12.4 dBm \\
 \caption{Tx and Rx values of two connected Inteno XG6746 switches}
 \end{table}
 
-The web-based GUI shows us that the values should be in dBm, but this makes no sense as the Tx is always lower then the Rx, this would indicate an increase of power in transit. This effect also increases when we introduce an attenuator on the link. Even if we would assume that this is the result of a simple mix-up of Rx and Tx then these values still make no sense because we get totally different values when measuring the actual output with an optical power meter. Also when we assume that these values are in fact measured in milliwatts then these values still make no sense as the values are negative. When the optics are placed in a different type of switch then we do get expected values which would indicate that this problem does not lie in the optics, but rather in the switch itself. We expect this to be a software bug. we can still use these switches for testing out-of-band management, but for fibre attenuation monitoring we had to use another type of switch, a Zyxel XGS4728F. 
+The web-based GUI shows us that the values should be in dBm, but this makes no sense as the Tx is always lower then the Rx, this would indicate an increase of power in transit. This effect also increases when we introduce an attenuator on the link. Even if we would assume that this is the result of a simple mix-up of Rx and Tx then these values still make no sense because we get totally different values when measuring the actual output with an optical power meter. Also when we assume that these values are in fact measured in milliwatts then these values still make no sense as the values are negative. When the optics are placed in a different type of switch then we do get expected values which would indicate that this problem does not lie in the optics, but rather in the switch itself. We expect this to be a software bug which can be resolved in the future. For this reason we have decided to still use the Inteno XG6746 for testing out-of-band management. For correct fibre attenuation monitoring we had to use another type of switch, a Zyxel XGS4728F.
 
 Although the Zyxel XGS4728F does show us the correct Tx and Rx values for the 1625nm optics, it does not allow them to actually come up. The reason for this is that the optics are only 100-mbit which the Zyxel XGS4728F does not support. 
+
+We can calculate how much dB attenuation is present on the fibre between two switches by subtracting the Tx dBm on switch1 with the Rx dBm on switch2, $dB=Tx_1-Rx_2$. We think it would also be interesting to keep track of the temperature of the Tx optic because this might influence the precise Tx wavelength, and thus attenuation.
 
 Our particular hardware situation requires us to build two different networks. Our primary test network will proof that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
 
