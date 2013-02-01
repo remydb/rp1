@@ -22,19 +22,21 @@ Version number & Date & Comment \\
 \end{tabular} 
 \end{comment}
 
-\tableofcontents
 \newpage
 
-\section{Preface}
+\section*{Preface}
 This report is the product of a four week research project done at BeetleFiberOptics, and as part of the Master programme 'System and Network Engineering' at the University of Amsterdam\cite{uva:os3}.
 
-BeetleFiberOptics is part of the Tallgrass company in Amsterdam and is a manufacturer of Coarse Wavelength Division Multiplexing, CWDM. A CDWM is a device which aggregates multiple wavelengths of light onto a single fibre. BeetleFiberOptics would like us to find out if, and how, it could use an extra wavelength outside of the traditional CDWM wavelengths to both monitor an optical fibre and as an extra out-of-band Ethernet network which might be used for network management. Primarily BeetleFiberOptics would like to know if we can use relatively cheap hardware which has the potential of being integrated into their CDWM devices.
+BeetleFiberOptics is part of the Tallgrass company in Amsterdam and is a manufacturer of Coarse Wavelength Division Multiplexing, CWDM, equipment. A CDWM is a device which aggregates multiple wavelengths of light onto a single fibre. BeetleFiberOptics would like us to find out if, and how, it could use an extra wavelength outside of the traditional CDWM wavelengths to both monitor an optical fibre and as an extra out-of-band Ethernet network which might be used for network management. Primarily BeetleFiberOptics would like to know if we can use relatively cheap hardware, which has the potential of being integrated into their CDWM devices, to achieve this.
 
 We would like to thank the people of BeetleFiberOptics and Tallgrass for their support and knowledge during this project.
 
 \newpage
-\section{Summary}
+\section*{Summary}
 \newpage
+\tableofcontents
+\newpage
+
 \section{Research question}
 It is common practice today to use Wavelength Division Multiplexing, WDM, devices on network links to increase the total amount of bandwidth that a single optical network link can carry. The WDM accomplishes this by assigning each input data stream its own unique light wavelength channel, $\lambda$. 
 Not every wavelength is suitable for heavy traffic usage because of the physical characteristics of these channels. Our hypothesis is that these channels could be used for lower speed applications such as monitoring and out of band management.
@@ -109,7 +111,7 @@ The main reason of our research is to look at potential uses of the unused chann
 Because of this we can safely assume that the fibre optical cable used is a single mode fibre which supports C+L band WDM systems.
 If the link was not used in a WDM set up, then there would be no reason to use the unconventional U-band.
 
-The ITU-T has several standards ranging from G.652 to G.656 which specify single mode optical fibres\cite[chap. 6-7]{itu-t:manual2009}, of which none have official support for the U-band.
+The ITU-T has several standards ranging from G.652 to G.657 which specify single mode optical fibres\cite[chap. 6-7]{itu-t:manual2009}, of which none have official support for the U-band.
 The U-band channel we choose should for this reason be as close to the L-band as possible to keep the wavelength closer to the cable's specifications.
 
 Figure~\ref{fig:attenuation} on page~\pageref{fig:attenuation} shows attenuation as a function of the wavelength of an unbent fibre. We can see that in the case of the U-band there is a gradual upward slope as the wavelength increases.
@@ -177,11 +179,11 @@ Sw2 & -4.86 dBm & -0.83 dBm  & -12.4 dBm \\
 
 The web-based GUI shows us that the values should be in dBm, but this makes no sense as the Tx is always lower then the Rx, this would indicate an increase of power in transit. This effect also increases when we introduce an attenuator on the link. Even if we would assume that this is the result of a simple mix-up of Rx and Tx then these values still make no sense because we get totally different values when measuring the actual output with the optical power meter. Also when we assume that these values are in fact measured in milliwatts then these values still make no sense as the values are negative. When the optics are placed in a different type of switch then we do get expected values which would indicate that this problem does not lie in the optics, but rather in the switch itself. We expect this to be a software bug which can be resolved in the future. For this reason we have decided to still use the Inteno XG6746 for testing out-of-band management. For correct fibre attenuation monitoring we had to use another type of switch, a Zyxel XGS4728F.
 
-Although the Zyxel XGS4728F does show us the correct Tx and Rx values for the 1625nm optics, it does not allow them to actually come up. The reason for this is that the optics are only 100-mbit which the Zyxel XGS4728F does not support. 
+Although the Zyxel XGS4728F does show us the correct Tx and Rx values for the 1625nm optics, it does not allow an Ethernet link to actually be brought up. The reason for this is that the optics are only 100-mbit which the Zyxel XGS4728F does not support. 
 
-We can calculate how much dB attenuation is present on the fibre between two switches by subtracting the Tx dBm on switch1 with the Rx dBm on switch2, $dB=Tx_1-Rx_2$. We think it would also be interesting to keep track of the temperature of the Tx optic because this might influence the precise Tx wavelength, and thus attenuation.
+We can calculate how many dB attenuation is present on the fibre between two switches by subtracting the Tx dBm on switch1 with the Rx dBm on switch2, $dB=Tx_1-Rx_2$. We think it would also be interesting to keep track of the temperature of the Tx optic because this might influence the precise Tx wavelength, and thus attenuation.
 
-Our particular hardware situation requires us to build two different networks. Our primary test network will proof that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
+Our particular hardware situation requires us to build two different networks. Our primary test network will prove that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
 
 \subsection{Primary test network}
 \begin{figure}[h]
@@ -194,7 +196,7 @@ Figure~\ref{fig:poc_all} on page~\pageref{fig:poc_all} shows our primary test ne
 
 The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi and 1 monitored switch. This way \texttt{RP1} will only monitor \texttt{Switch1} although \texttt{Switch2} uses the same default IPv4 address as \texttt{Switch1}. In the ideal situation where the \texttt{RP\#} and \texttt{Switch\#} would be combined into 1 device this VLAN would be obsolete.
 
-\texttt{VLAN-11} is used to exchange data between 2 \texttt{RP\#} devices. This VLAN creates a group of 2 \texttt{VLAN-10} units using the fiber optics in port \texttt{F1} on \texttt{Switch\#}. The \texttt{RP\#} devices use an IPv6 Link local address, this is done so there is no need to manually configure an IP address when 2 \texttt{VLAN-10} units are connected to each other. The 2 RPs can discover each other by sending a ping to IPv6 multicast address \texttt{FF02::1} to which all IPv6 linklocal hosts should listen and reply too\cite{ietf:rfc4291}. After the RP knows the IPv6 address of a potential neighbour it will do a simple check to see if that neighbour is indeed our polling partner and not some rouge computer. It will do this by sending a SHA256 hash of a common pre-shared password plus its own linklocal IPv6 address which should protect against a simple re-play attack.
+\texttt{VLAN-11} is used to exchange data between 2 \texttt{RP\#} devices. This VLAN creates a group of 2 \texttt{VLAN-10} units using the fiber optics in port \texttt{F1} on \texttt{Switch\#}. The \texttt{RP\#} devices use an IPv6 Link local address, this is done so there is no need to manually configure an IP address when 2 \texttt{VLAN-10} units are connected to each other. The 2 RPs can discover each other by sending a ping to IPv6 multicast address \texttt{FF02::1} which all IPv6 linklocal hosts should listen and reply to\cite{ietf:rfc4291}. After the RP knows the IPv6 address of a potential neighbour it will do a simple check to see if that neighbour is indeed our polling partner and not some rouge computer. It will do this by sending a SHA256 hash of a common pre-shared password plus its own linklocal IPv6 address which should protect against a simple re-play attack.
 
 \texttt{VLAN-12} is used to connect our devices to the rest of the network and thus might be used for out-of-band management.
 
@@ -237,7 +239,7 @@ Especially for the first test it is important to bear in mind that we are gettin
 This information has an error margin which can be vendor specific, but may be at most 3dBm, as stated in the SFF-8472 Specification for
 Diagnostic Monitoring Interface for Optical Transceivers\cite{SFF:DDM}
 
-\subsection{bla}
+\subsection{Equipment}
 For our main tests we have used 1625nm optics.
 To compare we also ran the same tests on 1550nm and 1610nm optics.
 To validate our test-network itself we will also run similar tests on more specialised equipment using the same optics.
@@ -252,29 +254,6 @@ For example: the value for Rx power actually was higher than the measured Tx val
 As our initial set-up seemed unreliable for power measurements, we built another.  This time we used a 28 port ZyXEL switch to which we connected all our devices and fibres.
 Using VLANs we set up connections between two Raspberry Pi's via a 25 kilometre fibre cable.
 This 25 kilometre cable could then be used to test the attenuation of each signal wavelength over a reasonably long distance.
-
-\subsection{Testing equipment}
-
-PUT ALL HARDWARE WE USED IN THIS CHAPTER INCLUDING ALL OPTICS AND OTDRs
-\begin{itemize}
-\item Inteno XG6746 \cite{Inteno:XG6746}
-\begin{itemize}
-\item Broadcom 6338
-\item Marvell 88E6161
-\item 8 MB Flash
-\item 32 MB RAM
-\end{itemize}
-
-\item Raspberry Pi - Model B
-
-\item Optics:
-\begin{itemize}
-\item SFP
-\item EOptolink
-\item EOLS-1603-29SD
-\item 1625nm
-\end{itemize}
-\end{itemize}
 
 %\subsection{Results}
 %After running the tests it quickly became apparent that the 1625nm band is very susceptible to attenuation.
@@ -406,19 +385,14 @@ We can therefore assume our measurements can be used as fairly reliable results.
 %1550 nm
 
 
-
-\section{Ethernet using 1625nm}
+\newpage
+\section{Conclusion}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
-Especially in DWDM systems the 1625nm band is used for these OTDR tests to tell if the monitored fibre is still in good condition to support wavelengths in the L- and U bands.
+Especially in DWDM systems the 1625nm band is used for these OTDR tests to tell if the monitored fibre is still in good condition.
 What has surprised us somewhat is that 1625nm optics are not readily available, meaning the wavelength is not regularly used for data communications using Ethernet.
 The tests we have performed during our research have shown the 1625nm band to be a lot more sensitive to attenuate through bending, temperature differences and distance.
 Regardless of these drawbacks, the 1625nm wavelength has proven to allow for the creation of stable Ethernet links.
 
-
-
-
-\newpage
-\section{Conclusion}
 \bibliographystyle{plain}
 \bibliography{bibliography}
 
