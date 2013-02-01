@@ -207,7 +207,7 @@ The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi
 \label{fig:CWDM}
 \end{figure}
 
-Because of the dBm representation problem of the Inteno XG6746 switches we had to create an alternate network using another switch type which does display the Tx and Rx values correctly. The Zyxel XGS4728F does display the correct values, but there was only one available to us, therefore a new network set-up was needed. The Attenuation test network diagram is shown in figure \ref{fig:CWDM} on page \pageref{fig:CWDM}.
+Because of the dBm representation problem of the Inteno XG6746 switches we had to do create a alternate network using another switch type which does display the Tx and Rx values correctly. The Zyxel XGS4728F does display the correct values, but there was only one available to us, therefore a new network set-up was needed. The Attenuation test network diagram is shown in figure \ref{fig:CWDM} on page \pageref{fig:CWDM}.
 
 The Zyxel XGS4728F switch does have one major flaw, it does not support 100-mbit speed optics to come up, which our 1625nm optics are. Luckily it does still give the correct Tx and Rx values for these optics when they are connected to each other with a fibre.
 
@@ -236,17 +236,6 @@ The first two of these tests will be done using our test set-up.
 Especially for the first test it is important to bear in mind that we are getting our Tx and Rx values from the digital diagnostic information provided by the optic.
 This information has an error margin which can be vendor specific, but may be at most 3dBm, as stated in the SFF-8472 Specification for
 Diagnostic Monitoring Interface for Optical Transceivers\cite{SFF:DDM}
-
-\subsection{OTDR}
-7.009 Db verlies 25KM (25,2575KM) 
-optical return loss: 16,99 Db
-test 30 sec, pulse 5 nano sec
-datum 2013-02-01
-1550 nm
-
-EXFO, FTB200.
-
-
 
 \subsection{bla}
 For our main tests we have used 1625nm optics.
@@ -301,7 +290,7 @@ The following wavelengths were tested:
 
 For each of these wavelengths we tested four different optics, to make sure we had somewhat reliable results to accurately portray the attenuation of each wavelength.
 All of the used optics were also designed for use over a range of 40 kilometres.
-Each of these optics was then run across a one metre and a 25 kilometre fibre cable.
+Each of these optics was then run across a one metre and a 25 kilometre G657.A fibre cable.
 These tests were then also performed using a different Bit Error Rate Tester, 
 This results in the following tables, showing the average attenuation for each wavelength and fibre cable length:
 
@@ -342,15 +331,55 @@ This results in the following tables, showing the average attenuation for each w
 As you can see, the 3 dBm error margin for the digital diagnostics monitoring distorts the results of the BERT measurements using the one metre cable quite significantly.
 For these tests the attenuation measured with the OFR seems more reliable, however only the Rx is measured by the OFR.
 The Tx is still provided by the DDM interface and may have a larger deviation.
+We must also mention that one of the four tested 1625nm optics suffered from an additional three to four dB attenuation on the transmitting side across any cable length, this will have raised the average attenuation for the 1625nm in table \ref{tab:attenuation-table-ber} and \ref{tab:attenuation-table-ofr}.
 
 Regardless of this deviation, it is clear that the 1625nm wavelength suffers from considerably more attenuation than the other tested wavelengths.
-The 1625nm optics are designed to handle at most 30dB difference between Tx and Rx power, so this test across 25 KM still falls well within the defined range of the optics.
-The downside to the 1625nm wavelength suffering from such increased attenuation is that more power will be needed to cover larger distances, compared to regular C- and L-band wavelengths. 
+The 1625nm optics are designed to handle at most 29dB difference between Tx and Rx power, so this test across 25 KM still falls well within the defined range of the optics.
+A downside to the 1625nm wavelength suffering from such increased attenuation is that more power will be needed to cover larger distances, compared to regular C- and L-band wavelengths. \\
 
+Besides measuring these attenuation values using the BERT, we also set up two Rasperry Pis to monitor the attenuation along the 1625nm and 1610nm links.
+The following graphs show changes in attenuation over the course of a day:\\
+
+\paragraph{}
+\begin{figure}[h!]
+\centerline{\includegraphics[scale=0.7]{images/1610.png}}
+\caption{Attenuation for both 1610nm fibre links}
+\label{fig:1610}
+\end{figure}
+As you can see in figure \ref{fig:1610} the regular 1610nm attenuation is reasonably stable, only deviating slightly over the course of a day.
+\begin{figure}[h!]
+\centerline{\includegraphics[scale=0.7]{images/1625-1.png}}
+\caption{Attenuation for one side of the 1625nm link}
+\label{fig:1625-1}
+\end{figure}
+\begin{figure}[h!]
+\centerline{\includegraphics[scale=0.7]{images/1625-2.png}}
+\caption{Attenuation for the other side of the 1625nm link}
+\label{fig:1625-2}
+\end{figure}
+
+The 1625nm links, however, show a lot more signs of fluctuation.
+We also measured the temperatures of the optics, to see if there was an obvious correlation between the temperature and the amount of attenuation.
+Every night when the lab is empty, the temperatures of the optics drop by roughly two or three degrees Celsius.
+This could cause the emitted light wavelength to drift slightly, which could in turn affect the attenuation over a fibre cable.
+
+As it turned out, our statistics did not prove a correlation between the temperature and the attenuation of the signal in our test set-up.
+
+\newpage
 \subsection{Ethernet link reliability}
-After establishing that the 1625nm optics seemed to communicate properly, we set up an Ethernet link using two Inteno switches.
+After establishing that the 1625nm optics seemed to communicate properly, we set up an Ethernet link using two Inteno switches and 1 KM G652.D fibre cables.
+We then used this link to send a steady flow of UDP data at a speed of 10Mbit/s, using iperf.
+The reason for using a relatively slow speed of 10Mbit/s is that the optics are only rated at 100Mbit/s.
+If we were to run tests with higher speeds, there is a greater chance of the packet loss being caused by an overly stressed optic, rather than the behaviour of the 1625nm wavelength along the fibre.
+We let the stream run all through the night, for 15 hours, and checked the results the next morning.
+Over the course of the 15 hour test period, no packets were lost.
+This seems to indicate that the 1625nm wavelength is capable of sustaining stable Ethernet links.
 
-
+To test under which conditions we would start losing packets, we started bending the fibre cable.
+No loss occurred until we started bending the fibre cable excessively.
+Only when very sharp bends, which could permanently damage the fibre cable, were made, did we see packet loss along the link.
+We also performed the same bending test using the BERT devices.
+The BERT also showed the BER increasing once sharp bends were made.
 
 \subsection{OTDR tests}
 7.009 dB loss 25KM (25.257KM)
