@@ -289,6 +289,7 @@ The following wavelengths were tested:
 \end{itemize}
 
 For each of these wavelengths we tested four different optics, to make sure we had somewhat reliable results to accurately portray the attenuation of each wavelength.
+It would have been preferable to use more than just four optics per wavelength, but during this research we did not have access to additional optics.
 All of the used optics were also designed for use over a range of 40 kilometres.
 Each of these optics was then run across a one metre and a 25 kilometre G657.A fibre cable.
 These tests were then also performed using a different Bit Error Rate Tester, 
@@ -328,7 +329,7 @@ This results in the following tables, showing the average attenuation for each w
 \caption{Wavelength attenuation as measured with BERT \& OFR}
 \end{table}
 
-As you can see, the 3 dBm error margin for the digital diagnostics monitoring distorts the results of the BERT measurements using the one metre cable quite significantly.
+As you can see, the 3 dB error margin for the digital diagnostics monitoring distorts the results of the BERT measurements using the one metre cable quite significantly.
 For these tests the attenuation measured with the OFR seems more reliable, however only the Rx is measured by the OFR.
 The Tx is still provided by the DDM interface and may have a larger deviation.
 We must also mention that one of the four tested 1625nm optics suffered from an additional three to four dB attenuation on the transmitting side across any cable length, this will have raised the average attenuation for the 1625nm in table \ref{tab:attenuation-table-ber} and \ref{tab:attenuation-table-ofr}.
@@ -358,12 +359,24 @@ As you can see in figure \ref{fig:1610} the regular 1610nm attenuation is reason
 \label{fig:1625-2}
 \end{figure}
 
-The 1625nm links, however, show a lot more signs of fluctuation.
+The same goes for the 1625nm links, they fluctuate slightly over the course of the day but there are no significant changes.
+These results are as expected, as the fibre cables have not been moved or bent during this monitoring period.
 We also measured the temperatures of the optics, to see if there was an obvious correlation between the temperature and the amount of attenuation.
-Every night when the lab is empty, the temperatures of the optics drop by roughly two or three degrees Celsius.
+\begin{figure}[h!]
+\centerline{\includegraphics[scale=0.7]{images/temp1625.png}}
+\caption{Temperatures for both 1625nm optics}
+\label{fig:temp1625}
+\end{figure}
+\begin{figure}[h!]
+\centerline{\includegraphics[scale=0.7]{images/temp1610.png}}
+\caption{Temperatures for both 1610nm optics}
+\label{fig:temp1610}
+\end{figure}
+Every night when the lab is empty the temperatures of the optics drop by roughly two or three degrees Celsius, as shown in figures \ref{fig:temp1610} and \ref{fig:temp1625}.
 This could cause the emitted light wavelength to drift slightly, which could in turn affect the attenuation over a fibre cable.
 
-As it turned out, our statistics did not prove a correlation between the temperature and the attenuation of the signal in our test set-up.
+As it turned out, the statistics did not prove a correlation between the temperature and the attenuation of the signal in our test set-up.
+Perhaps if the temperature of the optics changed more significantly it could affect the attenuation, but with small temperature changes the attenuation does not seem affected.
 
 \newpage
 \subsection{Ethernet link reliability}
@@ -382,12 +395,17 @@ We also performed the same bending test using the BERT devices.
 The BERT also showed the BER increasing once sharp bends were made.
 
 \subsection{OTDR tests}
-7.009 dB loss 25KM (25.257KM)
-ORL: 16.99 dB
-test 30 sec, 5ns pulses
-1550 nm
+To test the reliability of our previous measurements using the optics Digital Diagnostics statistics, we measured our 25 KM fibre cable including the CWDM on either end using the 1550nm band on an EXFO FTB-200 OTDR.
+The result of the measurement showed 7.009 dB of attenuation across the entire fibre path.
+When this result is compared to our measurements from table \ref{tab:attenuation-table-ber} it shows our measurements are reasonably close to the measurements using the OTDR.
+We can therefore assume our measurements can be used as fairly reliable results.
 
-EXFO FTB-200
+%7.009 dB loss 25KM (25.257KM)
+%ORL: 16.99 dB
+%test 30 sec, 5ns pulses
+%1550 nm
+
+
 
 \section{Ethernet using 1625nm}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
