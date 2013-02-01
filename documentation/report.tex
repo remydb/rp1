@@ -184,6 +184,7 @@ We can calculate how much dB attenuation is present on the fibre between two swi
 Our particular hardware situation requires us to build two different networks. Our primary test network will proof that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
 
 \subsection{Primary test network}
+\label{sec:prinet}
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.4]{images/PoC_all.png}}
 \caption{Network diagram of the out-of-band management network}
@@ -200,6 +201,7 @@ The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi
 
 
 \subsection{Attenuation test network}
+\label{sec:attnet}
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.4, trim = 0mm 0mm 0mm 0mm]{images/CWDM.png}}
@@ -215,43 +217,40 @@ We can both test our dBm exchange script and poll from the 1625nm optics because
 
 \newpage
 \section{Tests}
-We would like to find out if we can use the 1625nm wavelength to do reliable tests of a fibre. First we will establish a base test using a well-known wavelength used for optical networking. After the base-test we will compare this to the 1625nm wavelength.
+For our tests we shall use the network set-ups as described in section \ref{sec:prinet} and section \ref{sec:attnet}.
 
-Before we will use our test-network we will test this with the reliable Bit Error Rate testers so we also have a base to compare our own set-up with.
-
-The set of tests will consist of the following three parts:
+We have performed the following tests:
 \begin{itemize}
-\item Measuring the difference between Tx and Rx values at either end of the fibre link.
-	\begin{itemize}
-	\item This test will be performed on the same fibre using three different sets of optics operating of different wavelengths.  We will use two common wavelengths as a base reading to compare to the results of the 1625nm wavelength.
-	\end{itemize}
 \item Sending a steady stream of UDP packets across the fibre at 10Mb/s.
 	\begin{itemize}
-	\item This will show if packets are being lost while travelling across the fibre. Our preliminary tests have shown that excessively bending a fibre will result in severe packet loss.
+	\item Using the primary network described in section \ref{sec:prinet}.
+	\item This test will show if we can set up a reliable Ethernet link over 1625nm.
 	\end{itemize}
-\item Running traditional OTDR tests across the fibre
+\item Measuring the difference between Tx and Rx values at either end of the fibre link.
+	\begin{itemize}
+	\item Using the attenuation network described in section \ref{sec:attnet}.
+	\item for comparison we will also use sepperate Bit Error Rate testers
+	\item We will compare the following wavelengths:
+		\begin{itemize}
+		\item 1550 nm
+		\item 1610 nm
+		\item 1625 nm
+		\end{itemize}
+	\item We will compare over the following fibre lengths:
+		\begin{itemize}
+		\item 1 m
+		\item 25 Km
+		\end{itemize}
+	\item This test will show us how much more attenuation the 1625nm wavelength has in practise in comparison with the theory.
+	\end{itemize}
 \end{itemize}
 
-The first two of these tests will be done using our test set-up.
-Especially for the first test it is important to bear in mind that we are getting our Tx and Rx values from the digital diagnostic information provided by the optic.
+For the attenuation test it is important to bear in mind that we are getting our Tx and Rx values from the digital diagnostic information provided by the optic.
 This information has an error margin which can be vendor specific, but may be at most 3dBm, as stated in the SFF-8472 Specification for
 Diagnostic Monitoring Interface for Optical Transceivers\cite{SFF:DDM}
 
-\subsection{bla}
-For our main tests we have used 1625nm optics.
-To compare we also ran the same tests on 1550nm and 1610nm optics.
-To validate our test-network itself we will also run similar tests on more specialised equipment using the same optics.
-In theory these optics should return the same values, regardless of which equipment they are plugged into.
+In theory these optics should return the same values regardless of which equipment they are plugged into, although The Inteno switches didn't display the correct values as shown in table \ref{tab:crazy-inteno} on page \pageref{tab:crazy-inteno}.
 The optics return their values through the standardised digital diagnostics monitoring interface using i$^2$c, this standard defines which values are measured and how the information is stored.\cite{SFF:DDM}
-In practice, we have noticed that equipment manufacturers sometimes seem to change these values before displaying them.
-A prime example are the Inteno switches used as the core of our tests.
-The Rx and Tx values returned by these switches deviated from the actual values so much that it was impossible for us to spot any clear relation between the presented values and the values as measured by a separate optical power meter.
-After some investigation our tests showed that the values presented by the Inteno switches do bear resemblance to the actual values, however they are modified in such a way as to make them completely useless.
-For example: the value for Rx power actually was higher than the measured Tx value, and would even increase when the signal was purposefully attenuated.
-
-As our initial set-up seemed unreliable for power measurements, we built another.  This time we used a 28 port ZyXEL switch to which we connected all our devices and fibres.
-Using VLANs we set up connections between two Raspberry Pi's via a 25 kilometre fibre cable.
-This 25 kilometre cable could then be used to test the attenuation of each signal wavelength over a reasonably long distance.
 
 \subsection{Testing equipment}
 
