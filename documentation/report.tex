@@ -231,7 +231,7 @@ We have performed the following tests:
 \item Measuring the difference between Tx and Rx values at either end of the fibre link.
 	\begin{itemize}
 	\item Using the attenuation network described in section \ref{sec:attnet}.
-	\item for comparison we will also use sepperate Bit Error Rate testers
+	\item To show that the Zyxel switch's Tx and Rx readout can be trusted we will also use the same optics in a separate Bit Error Rate Tester, BERT,  which also shows the optic's Tx and Rx values.
 	\item We will compare the following wavelengths:
 		\begin{itemize}
 		\item 1550 nm
@@ -254,10 +254,43 @@ Diagnostic Monitoring Interface for Optical Transceivers\cite{SFF:DDM}
 In theory these optics should return the same values regardless of which equipment they are plugged into, although The Inteno switches didn't display the correct values as shown in table \ref{tab:crazy-inteno} on page \pageref{tab:crazy-inteno}.
 The optics return their values through the standardised digital diagnostics monitoring interface using i$^2$c, this standard defines which values are measured and how the information is stored.\cite{SFF:DDM}
 
-%\subsection{Results}
-%After running the tests it quickly became apparent that the 1625nm band is very susceptible to attenuation.
+\newpage
+\subsection{Ethernet link reliability test}
+After establishing that the 1625nm optics seemed to communicate properly, we set up an Ethernet link using two Inteno switches and 1 KM G652.D fibre cables.
+We then used this link to send a steady flow of UDP data at a speed of 10Mbit/s for 15 hours using the programme iperf. 
+\begin{itemize} 
+\item RP1: \texttt{iperf -suV}
+\item RP2: \texttt{iperf -c fe80::ba27:ebff:fe58:69e2\%eth0.11 -V -b 10000000 -t 54000}
+\end{itemize}
+We had the following result on RP2:\\
+\texttt{
+------------------------------------------------------------\\
+Client connecting to fe80::ba27:ebff:fe58:69e2\%eth0.11, UDP port 5001\\
+Sending 1470 byte datagrams\\
+UDP buffer size:  160 KByte (default)\\
+------------------------------------------------------------\\
+$[$  3$]$ local fe80::ba27:ebff:fe95:ba76 port 38146 connected with\\ fe80::ba27:ebff:fe58:69e2 port 5001\\
+$[$ ID$]$ Interval       Transfer     Bandwidth\\
+$[$  3$]$  0.0-54000.0 sec  62.9 GBytes  10.0 Mbits/sec\\
+$[$  3$]$ Sent 45918349 datagrams\\
+$[$  3$]$ Server Report:\\
+$[$  3$]$  0.0-54000.0 sec  62.9 GBytes  10.0 Mbits/sec   0.047 ms    0/45918348 (0\%)\\
+$[$  3$]$  0.0-54000.0 sec  1 datagrams received out-of-order\\
+}
 
-\subsection{Rx- Tx values}
+The reason for using a relatively slow speed of 10Mbit/s is that the optics are only rated at 100Mbit/s.
+If we were to run tests with higher speeds, there is a greater chance of the packet loss being caused by an overly stressed optic, rather than the behaviour of the 1625nm wavelength along the fibre.
+We let the stream run all through the night, for 15 hours, and checked the results the next morning.
+Over the course of the 15 hour test period, no packets were lost.
+This seems to indicate that the 1625nm wavelength is capable of sustaining stable Ethernet links.
+
+To test under which conditions we would start losing packets, we started bending the fibre cable.
+No loss occurred until we started bending the fibre cable excessively.
+Only when very sharp bends, which could permanently damage the fibre cable, were made, did we see packet loss along the link.
+We also performed the same bending test using the BERT devices.
+The BERT also showed the BER increasing once sharp bends were made.
+
+\subsection{Attenuation test}
 We started off by using Bit Error Rate Testers (BERT) to read the attenuation of the light signals across different wavelengths and cable lengths.
 The following wavelengths were tested:
 \begin{itemize}
@@ -355,22 +388,6 @@ This could cause the emitted light wavelength to drift slightly, which could in 
 
 As it turned out, the statistics did not prove a correlation between the temperature and the attenuation of the signal in our test set-up.
 Perhaps if the temperature of the optics changed more significantly it could affect the attenuation, but with small temperature changes the attenuation does not seem affected.
-
-\newpage
-\subsection{Ethernet link reliability}
-After establishing that the 1625nm optics seemed to communicate properly, we set up an Ethernet link using two Inteno switches and 1 KM G652.D fibre cables.
-We then used this link to send a steady flow of UDP data at a speed of 10Mbit/s, using iperf.
-The reason for using a relatively slow speed of 10Mbit/s is that the optics are only rated at 100Mbit/s.
-If we were to run tests with higher speeds, there is a greater chance of the packet loss being caused by an overly stressed optic, rather than the behaviour of the 1625nm wavelength along the fibre.
-We let the stream run all through the night, for 15 hours, and checked the results the next morning.
-Over the course of the 15 hour test period, no packets were lost.
-This seems to indicate that the 1625nm wavelength is capable of sustaining stable Ethernet links.
-
-To test under which conditions we would start losing packets, we started bending the fibre cable.
-No loss occurred until we started bending the fibre cable excessively.
-Only when very sharp bends, which could permanently damage the fibre cable, were made, did we see packet loss along the link.
-We also performed the same bending test using the BERT devices.
-The BERT also showed the BER increasing once sharp bends were made.
 
 \subsection{OTDR tests}
 To test the reliability of our previous measurements using the optics Digital Diagnostics statistics, we measured our 25 KM fibre cable including the CWDM on either end using the 1550nm band on an EXFO FTB-200 OTDR.
