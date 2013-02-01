@@ -207,7 +207,7 @@ The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi
 \label{fig:CWDM}
 \end{figure}
 
-Because of the dBm representation problem of the Inteno XG6746 switches we had to do create a alternate network using another switch type which does display the Tx and Rx values correctly. The Zyxel XGS4728F does display the correct values, but there was only one available to us, therefore a new network set-up was needed. The Attenuation test network diagram is shown in figure \ref{fig:CWDM} on page \pageref{fig:CWDM}.
+Because of the dBm representation problem of the Inteno XG6746 switches we had to create an alternate network using another switch type which does display the Tx and Rx values correctly. The Zyxel XGS4728F does display the correct values, but there was only one available to us, therefore a new network set-up was needed. The Attenuation test network diagram is shown in figure \ref{fig:CWDM} on page \pageref{fig:CWDM}.
 
 The Zyxel XGS4728F switch does have one major flaw, it does not support 100-mbit speed optics to come up, which our 1625nm optics are. Luckily it does still give the correct Tx and Rx values for these optics when they are connected to each other with a fibre.
 
@@ -380,6 +380,14 @@ No loss occurred until we started bending the fibre cable excessively.
 Only when very sharp bends, which could permanently damage the fibre cable, were made, did we see packet loss along the link.
 We also performed the same bending test using the BERT devices.
 The BERT also showed the BER increasing once sharp bends were made.
+
+\subsection{OTDR tests}
+7.009 dB loss 25KM (25.257KM)
+ORL: 16.99 dB
+test 30 sec, 5ns pulses
+1550 nm
+
+EXFO FTB-200
 
 \section{Ethernet using 1625nm}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
