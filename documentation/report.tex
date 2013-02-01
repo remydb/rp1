@@ -33,6 +33,27 @@ We would like to thank the people of BeetleFiberOptics and Tallgrass for their s
 
 \newpage
 \section*{Summary}
+For a month we have focussed on the following research question:
+\begin{quote}
+\textit{
+What applications can the unused wavelengths outside of the Telecom spectrum be used for?
+}
+\end{quote}
+In the first stages of the research we decided to focus on the 1625nm band, as it is closest to the regular C- \& L-bands and has the least loss of all the wavelengths in the U-band.
+We started researching the feasibility of monitoring and out-of-band management links using this frequency.
+
+We tested the 1625nm wavelength to see how it compares to the 1550nm and 1610nm wavelengths.
+We performed the following tests:
+\begin{itemize}
+	\item OTDR test
+	\item Attenuation test per wavelength
+	\item Link stability test using iperf
+\end{itemize}
+Our tests showed the 1625nm wavelength suffers from considerably more attenuation than the 1550nm and 1610nm bands do.
+Even though the attenuation was considerable, the link quality was still good enough to establish a stable Ethernet connection.
+We used this Ethernet connection to let Raspberry Pis at either end of the link communicate and monitor the attenuation of the link.\\
+\\
+The result of our research is that the 1625nm wavelength has shown to be capable of sustaining a stable connection, well suited for out-of-band management and monitoring.
 \newpage
 \tableofcontents
 \newpage
@@ -184,7 +205,7 @@ Although the Zyxel XGS4728F does show us the correct Tx and Rx values for the 16
 We can calculate how many dB attenuation is present on the fibre between two switches by subtracting the Tx dBm on switch1 with the Rx dBm on switch2, $dB=Tx_1-Rx_2$. We think it would also be interesting to keep track of the temperature of the Tx optic because this might influence the precise Tx wavelength, and thus attenuation.
 
 Our particular hardware situation requires us to build two different networks. Our primary test network will prove that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
-
+\newpage
 \subsection{Primary test network}
 \label{sec:prinet}
 \begin{figure}[h]
@@ -213,7 +234,7 @@ The purpose of \texttt{VLAN-10} is to create a single unit out of 1 Raspberry Pi
 
 Because of the dBm representation problem of the Inteno XG6746 switches we had to do create a alternate network using another switch type which does display the Tx and Rx values correctly. The Zyxel XGS4728F does display the correct values, but there was only one available to us, therefore a new network set-up was needed. The Attenuation test network diagram is shown in figure \ref{fig:CWDM} on page \pageref{fig:CWDM}.
 
-The Zyxel XGS4728F switch does have one major flaw, it does not support 100-mbit speed optics to come up, which our 1625nm optics are. Luckily it does still give the correct Tx and Rx values for these optics when they are connected to each other with a fibre.
+The Zyxel XGS4728F switch does have one major flaw, it does not support 100-mbit speed optics like our 1625nm ones. Luckily it does still give the correct Tx and Rx values for these optics when they are connected to each other with a fibre.
 
 We can both test our dBm exchange script and poll from the 1625nm optics because we can let the RPs poll not only from the optics in their own VLAN, but also from the 1625nm optics.
 
