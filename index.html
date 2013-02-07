@@ -26,6 +26,11 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+
+		<style type="text/css">
+			.reveal table {border:solid 1px white;}
+			.reveal td {border:solid 1px white;}
+		</style>
 	</head>
 
 	<body>
@@ -248,6 +253,7 @@
     <section>
         <h2>Proof of concept: second set-up</h2>
         <img src="images/CWDM.png">
+    <center><i>Attenuation network</i></center>
         <ul>
             <li>Zyxel properly reads DDM values</li>
             <li>Doesn't support 100mbit SPF<br>
@@ -259,10 +265,81 @@
         <h2>Tests</h2>
         <ul>
             <li>Attenuation</li>
-            <li>OTDR</li>
-            <li>Stability<ul><li>iperf</li></ul></li>
+            <li>Stability</li>
         </ul>
     </section>
+    <section>
+        <h2>Attenuation test</h2>
+<center>
+	<p>OTDR base test, 1550nm, 25 Km, 7.009 dB</p>
+<table>
+	<tr>
+		<td><b>Wavelength</b></td>
+		<td><b>1M</b></td>
+		<td><b>25KM</b></td>
+	</tr>
+	<tr>
+		<td>1550nm</td>
+		<td>-0.05 dB</td>
+		<td>8.3625 dB</td>
+	</tr>
+	<tr>
+		<td>1610nm</td>
+		<td>0.0875 dB</td>
+		<td>7.975 dB</td>
+	</tr>
+	<tr>
+		<td>1625nm</td>
+		<td>2.275 dB</td>
+		<td>14.325 dB</td>
+	</tr>
+</table>
+<br>
+<table>
+	<tr>
+		<td><b>Wavelength</b></td>
+		<td><b>1M</b></td>
+		<td><b>25KM</b></td>
+	</tr>
+	<tr>
+		<td>1550nm</td>
+		<td>0.4425 dB</td>
+		<td>9.2325 dB</td>
+	</tr>
+	<tr>
+		<td>1610nm</td>
+		<td>0.62375 dB</td>
+		<td>9.2825 dB</td>
+	</tr>
+	<tr>
+		<td>1625nm</td>
+		<td>2.25125 dB</td>
+		<td>14.95625 dB</td>
+	</tr>
+</table>
+</center>
+    </section>
+
+ <section>
+        <h2>Stability test</h2>
+	<p>10-mbit, 15 hours</p>
+	<p>Total of 62.9GB transferred</p>
+	<p>45918348 packets</p>
+	<p align="left"><font size="5">RP1: iperf -suV</font></p>
+	<p align="left"><font size="5">RP2: iperf -c fe80::ba27:eb27:ebff:fe58:69e2%eth0.11 -V -b 10000000 -t 54000</font></p>
+</section>
+
+<section>
+	<h2>Conclusion</h2>
+	<p>Altough 1625nm is more sensitive to:</p>
+	<ul>
+		<li>distance</li>
+		<li>bending</li>
+		<li>temerature changes</li>
+	</ul>
+	<p>Still stable over long distances</p>
+</section>
+ 
 </div>
 
 		</div>
