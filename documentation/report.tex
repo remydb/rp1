@@ -32,7 +32,7 @@ BeetleFiberOptics is part of the Tallgrass company in Amsterdam and is a manufac
 We would like to thank the people of BeetleFiberOptics and Tallgrass for their support and knowledge during this project.
 
 \newpage
-\section*{Summary}
+\section*{Abstract}
 For a month we have focussed on the following research question:
 \begin{quote}
 \textit{
@@ -157,7 +157,7 @@ To test our hypotheses we were initially provided with two Inteno XG6746\cite{In
 It is in the interest of BeetleFiberOptics that we use this relatively cheap equipment instead of specialised, and usually more expensive fibre monitoring equipment.
 The Inteno XG6746 switches have one modular SFP fibre optic port in which we can place the optics to be tested. 
 
-We would like the fibre optic switches to communicate with each other so they can exchange statistics about their fibre optics and use these statistics to create MRTG\cite{MRTG:MRTG} graphs that could show interesting trends which might be an indicator of fibre degradation over time.
+We would like the fibre optic switches to communicate with each other so they can exchange statistics about their fibre optics and use these statistics to create MRTG\cite{MRTG:MRTG} graphs that could show interesting trends which might be an indicator of fibre performance over time.
 
 \subsection{Inteno XG6746}
 The Inteno XG6746 runs on the software image \texttt{XG6746\_4.02ITT24.01\_20121022}.
@@ -202,7 +202,7 @@ The web-based GUI shows us that the values should be in dBm, but this makes no s
 
 Although the Zyxel XGS4728F does show us the correct Tx and Rx values for the 1625nm optics, it does not allow an Ethernet link to actually be brought up. The reason for this is that the optics are only 100-mbit which the Zyxel XGS4728F does not support. 
 
-We can calculate how many dB attenuation is present on the fibre between two switches by subtracting the Tx dBm on switch1 with the Rx dBm on switch2, $dB=Tx_1-Rx_2$. We think it would also be interesting to keep track of the temperature of the Tx optic because this might influence the precise Tx wavelength, and thus attenuation.
+We can calculate how much attenuation is present on the fibre between two switches by calculating the difference between the optical power sent from switch1 and the optical power received at switch2: $Att=Tx(sw1)-Rx(sw2)$. We think it would also be interesting to keep track of the temperature of the Tx optic because this might influence the precise Tx wavelength, and thus attenuation.
 
 Our particular hardware situation requires us to build two different networks. Our primary test network will prove that an Ethernet network using 1625nm optics is possible, and our Attenuation network will prove that we can monitor the attenuation of a fibre link over time.
 \newpage
@@ -334,11 +334,11 @@ This results in the following tables, showing the average attenuation for each w
 \hline 
 \textbf{Wavelength} & \textbf{1 M} & \textbf{25KM}\\ 
 \hline 
-1550nm & -0.05 dB & 8.3625 dB\\ 
+1550nm & -0.05 dB & 8.36 dB\\ 
 \hline 
-1610nm & 0.0875 dB & 7.975 dB\\ 
+1610nm & 0.09 dB & 7.98 dB\\ 
 \hline 
-1625nm & 2.275 dB & 14.325 dB\\
+1625nm & 2.28 dB & 14.33 dB\\
 \hline
 \end{tabular} 
 \caption{Wavelength attenuation as measured with BERT}
@@ -351,11 +351,11 @@ This results in the following tables, showing the average attenuation for each w
 \hline 
 \textbf{Wavelength} & \textbf{1 M} & \textbf{25KM}\\ 
 \hline 
-1550nm & 0.4425 dB & 9.2325 dB\\ 
+1550nm & 0.44 dB & 9.23 dB\\ 
 \hline 
-1610nm & 0.62375 dB & 9.2825 dB\\ 
+1610nm & 0.62 dB & 9.28 dB\\ 
 \hline 
-1625nm & 2.25125 dB & 14.95625 dB\\
+1625nm & 2.25 dB & 14.96 dB\\
 \hline
 \end{tabular}
 \caption{Wavelength attenuation as measured with BERT \& OPM}
@@ -421,14 +421,14 @@ We can therefore assume our measurements can be used as fairly reliable results.
 %test 30 sec, 5ns pulses
 %1550 nm
 
-
 \newpage
 \section{Conclusion}
 Up until now the 1625nm band has been used for monitoring, however so far it has been mainly used for out-of-band OTDR testing.
 Especially in DWDM systems the 1625nm band is used for these OTDR tests to tell if the monitored fibre is still in good condition.
 What has surprised us somewhat is that 1625nm optics are not readily available, meaning the wavelength is not regularly used for data communications using Ethernet.
-The tests we have performed during our research have shown the 1625nm band to be a lot more sensitive to attenuate through bending, temperature differences and distance.
+The tests we have performed during our research have shown the 1625nm band to be a lot more sensitive to attenuation through bending, temperature differences and distance.
 Regardless of these drawbacks, the 1625nm wavelength has proven to allow for the creation of stable Ethernet links over 25 kilometres.
+From a monitoring perspective, it may even be an added feature that the 1625nm wavelength is so sensitive to bending, as it will show signs of unwanted manipulation of the fibre sooner than the regular wavelength connections would.
 
 \newpage
 \bibliographystyle{plain}
